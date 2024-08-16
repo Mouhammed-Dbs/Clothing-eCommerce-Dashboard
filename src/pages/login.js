@@ -1,4 +1,30 @@
+import { useState } from "react";
+import { useRouter } from "next/router";
+import { login } from "../../public/functions/auth";
+
 export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+
+  const loginToDashboard = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
+
+    const res = await login(email, password);
+
+    setIsLoading(false);
+
+    if (res.error) {
+      setError(res.data.message || "Login failed. Please try again.");
+    } else {
+      router.push("/");
+    }
+  };
+
   return (
     <main className="flex items-center justify-center min-h-screen bg-gradient-to-br from-orange-200 via-orange-300 to-orange-400 px-4">
       <div className="bg-white p-8 rounded-xl shadow-2xl max-w-md w-full">
@@ -8,7 +34,8 @@ export default function Login() {
         <h2 className="text-3xl font-extrabold text-gray-800 mb-6 text-center">
           Login to Dashboard
         </h2>
-        <form className="space-y-6">
+        {error && <div className="mb-4 text-red-600 text-center">{error}</div>}
+        <form className="space-y-6" onSubmit={loginToDashboard}>
           <div>
             <label
               htmlFor="email"
@@ -22,6 +49,8 @@ export default function Login() {
               type="email"
               autoComplete="email"
               required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-orange-500 focus:border-orange-500"
             />
           </div>
@@ -38,6 +67,8 @@ export default function Login() {
               type="password"
               autoComplete="current-password"
               required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-orange-500 focus:border-orange-500"
             />
           </div>
@@ -67,9 +98,14 @@ export default function Login() {
           </div>
           <button
             type="submit"
-            className="w-full flex justify-center py-3 px-4 border border-transparent rounded-full shadow-sm text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 font-semibold transition duration-300"
+            disabled={isLoading}
+            className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-full shadow-sm text-white ${
+              isLoading
+                ? "bg-orange-300 cursor-not-allowed"
+                : "bg-orange-500 hover:bg-orange-600"
+            } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 font-semibold transition duration-300`}
           >
-            Sign in
+            {isLoading ? "Signing in..." : "Sign in"}
           </button>
         </form>
       </div>
