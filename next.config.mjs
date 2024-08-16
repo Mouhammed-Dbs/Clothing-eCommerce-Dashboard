@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   env: {
-    BASE_API_URL: "https:api.saramoda.shop",
+    BASE_API_URL: "https://api.saramoda.shop",
   },
 };
 
