@@ -36,6 +36,6 @@ exports.login = async (email, password, rememberMe) => {
 
     return { error: false, data: res.data };
   } catch (err) {
-    return { error: true, data: err.response.data };
+    return { error: true, data: err.response?.data };
   }
 };
