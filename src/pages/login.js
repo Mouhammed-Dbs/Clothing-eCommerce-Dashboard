@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { login } from "../../public/functions/auth";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -8,6 +9,7 @@ export default function Login() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   const loginToDashboard = async (e) => {
@@ -20,7 +22,7 @@ export default function Login() {
     setIsLoading(false);
 
     if (res.error) {
-      setError(res.data.message || "Login failed. Please try again.");
+      setError(res.data?.message || "Login failed. Please try again.");
     } else {
       router.push("/");
     }
@@ -55,7 +57,7 @@ export default function Login() {
               className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-orange-500 focus:border-orange-500"
             />
           </div>
-          <div>
+          <div className="relative">
             <label
               htmlFor="password"
               className="block text-left text-sm font-medium text-gray-700"
@@ -65,13 +67,23 @@ export default function Login() {
             <input
               id="password"
               name="password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               autoComplete="current-password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-orange-500 focus:border-orange-500"
             />
+            <div
+              className="absolute inset-y-0 top-6 right-0 pr-3 flex items-center cursor-pointer"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? (
+                <AiFillEyeInvisible className="h-6 w-6 text-gray-500" />
+              ) : (
+                <AiFillEye className="h-6 w-6 text-gray-500" />
+              )}
+            </div>
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center">
