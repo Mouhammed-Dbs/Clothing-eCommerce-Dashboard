@@ -12,6 +12,7 @@ export default function App({ Component, pageProps }) {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
   const getUserLoginStatus = async () => {
+    setLoading(true);
     const logged = await isLogin();
     setIsUserLoggedIn(logged);
     setLoading(false);

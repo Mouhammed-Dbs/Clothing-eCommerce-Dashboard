@@ -7,6 +7,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const router = useRouter();
 
   const loginToDashboard = async (e) => {
@@ -14,7 +15,7 @@ export default function Login() {
     setIsLoading(true);
     setError("");
 
-    const res = await login(email, password);
+    const res = await login(email, password, rememberMe);
 
     setIsLoading(false);
 
@@ -78,6 +79,8 @@ export default function Login() {
                 id="remember-me"
                 name="remember-me"
                 type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
                 className="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded"
               />
               <label
