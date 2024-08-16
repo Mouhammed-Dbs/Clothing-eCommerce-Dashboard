@@ -30,7 +30,7 @@ export default function App({ Component, pageProps }) {
     );
   } else if (!isUserLoggedIn && !isLoginPage) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-orange-200 via-orange-300 to-orange-400">
+      <main className="flex items-center justify-center min-h-screen bg-gradient-to-br from-orange-200 via-orange-300 to-orange-400 px-4">
         <div className="bg-white p-8 rounded-xl shadow-2xl max-w-md w-full text-center">
           <h1 className="text-3xl font-extrabold text-gray-800 mb-4">
             Welcome Back!
@@ -45,7 +45,7 @@ export default function App({ Component, pageProps }) {
             Go to Login Page
           </Link>
         </div>
-      </div>
+      </main>
     );
   } else {
     return <Component {...pageProps} />;

@@ -1,7 +1,10 @@
 export default function Login() {
   return (
-    <main className="flex items-center justify-center min-h-screen bg-gradient-to-br from-orange-200 via-orange-300 to-orange-400">
+    <main className="flex items-center justify-center min-h-screen bg-gradient-to-br from-orange-200 via-orange-300 to-orange-400 px-4">
       <div className="bg-white p-8 rounded-xl shadow-2xl max-w-md w-full">
+        <div className="mb-6 text-center">
+          <h1 className="text-4xl font-extrabold text-orange-500">Saramoda</h1>
+        </div>
         <h2 className="text-3xl font-extrabold text-gray-800 mb-6 text-center">
           Login to Dashboard
         </h2>
