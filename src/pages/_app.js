@@ -4,16 +4,17 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { isLogin } from "../../public/functions/auth";
+import { Spinner } from "@nextui-org/react";
 
 export default function App({ Component, pageProps }) {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+
   const getUserLoginStatus = async () => {
-    setLoading(true);
     const logged = await isLogin();
-    setLoading(false);
     setIsUserLoggedIn(logged);
+    setLoading(false);
   };
 
   const isLoginPage = router.pathname.endsWith("/login");
@@ -21,6 +22,19 @@ export default function App({ Component, pageProps }) {
   useEffect(() => {
     getUserLoginStatus();
   }, [router]);
+
+  if (loading) {
+    return (
+      <main className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-orange-200 via-orange-300 to-orange-400 px-4 text-center">
+        <div className="bg-white p-6 rounded-xl shadow-lg max-w-sm w-full">
+          <Spinner size="xl" />
+          <p className="mt-4 text-lg font-medium text-gray-700">
+            Loading, please wait...
+          </p>
+        </div>
+      </main>
+    );
+  }
 
   if (isUserLoggedIn && !isLoginPage) {
     return (
