@@ -1,29 +1,34 @@
 import "@/styles/globals.css";
 import HomeLayout from "@/layouts/HomeLayout";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { isLogin } from "../../public/functions/auth";
 
 export default function App({ Component, pageProps }) {
   const router = useRouter();
-
-  const isUserLoggedIn = () => {
-    return false;
+  const [loading, setLoading] = useState(false);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+  const getUserLoginStatus = async () => {
+    setLoading(true);
+    const logged = await isLogin();
+    setLoading(false);
+    setIsUserLoggedIn(logged);
   };
 
   const isLoginPage = router.pathname.endsWith("/login");
 
   useEffect(() => {
-    console.log(router.pathname);
+    getUserLoginStatus();
   }, [router]);
 
-  if (isUserLoggedIn() && !isLoginPage) {
+  if (isUserLoggedIn && !isLoginPage) {
     return (
       <HomeLayout>
         <Component {...pageProps} />
       </HomeLayout>
     );
-  } else if (!isUserLoggedIn() && !isLoginPage) {
+  } else if (!isUserLoggedIn && !isLoginPage) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-orange-200 via-orange-300 to-orange-400">
         <div className="bg-white p-8 rounded-xl shadow-2xl max-w-md w-full text-center">

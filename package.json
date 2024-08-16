@@ -18,6 +18,7 @@
     "@nextui-org/button": "^2.0.37",
     "@nextui-org/navbar": "^2.0.36",
     "@nextui-org/select": "^2.2.5",
+    "axios": "^1.7.4",
     "next": "^14.2.5",
     "primereact": "^10.8.2",
     "react": "^18",
