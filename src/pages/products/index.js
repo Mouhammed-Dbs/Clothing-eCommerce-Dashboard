@@ -12,6 +12,7 @@ import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Image from 'next/image';
 
 export default function Products() {
   const router = useRouter();
@@ -20,6 +21,7 @@ export default function Products() {
   // Effect to load products from local storage
   useEffect(() => {
     const storedProducts = JSON.parse(localStorage.getItem('products')) || [];
+    console.log('Retrieved products:', storedProducts); // Debug log
     setProducts(storedProducts);
   }, []);
 
@@ -42,23 +44,24 @@ export default function Products() {
         href='/products/addProducts'
         variant="contained"
         startIcon={<AddCircleIcon className='text-white' />}
-        className='hover:bg-[#A29415] text-slate-950 bg-[#E3D026] normal-case text-base'
+        sx={{border:"1px solid #fb923c" ,backgroundColor:"orange" , color:"#fff" ,"&:hover":{backgroundColor:"#ea580c"} , textTransform:"none" ,fontSize:"16px"}}
         style={{ marginBottom: '20px' }}
       >
         Add Product
       </Button>
       {products.length > 0 && (
-        <TableContainer component={Paper} className='border-2 border-orange-400 bg-slate-100'>
+        <TableContainer component={Paper} sx={{border:"1px solid #fb923c", backgroundColor:"#f1f5f9"}}>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell className='font-bold text-orange-700'>Name</TableCell>
-                <TableCell className='font-bold text-orange-700'>Description</TableCell>
-                <TableCell className='font-bold text-orange-700'>Price</TableCell>
-                <TableCell className='font-bold text-orange-700'>Size</TableCell>
-                <TableCell className='font-bold text-orange-700'>Categories</TableCell>
-                <TableCell className='font-bold text-orange-700'>Images</TableCell>
-                <TableCell className='font-bold text-orange-700'>Actions</TableCell>
+                <TableCell sx={{fontWeight:"bold", color:"#c2410c"}}>Name</TableCell>
+                <TableCell sx={{fontWeight:"bold", color:"#c2410c"}}>Description</TableCell>
+                <TableCell sx={{fontWeight:"bold", color:"#c2410c"}}>Price</TableCell>
+                <TableCell sx={{fontWeight:"bold", color:"#c2410c"}}>Size</TableCell>
+                <TableCell sx={{fontWeight:"bold", color:"#c2410c"}}>Categories</TableCell>
+                <TableCell sx={{fontWeight:"bold", color:"#c2410c"}}>Colors</TableCell>
+                <TableCell sx={{fontWeight:"bold", color:"#c2410c"}}>Images</TableCell>
+                <TableCell sx={{fontWeight:"bold", color:"#c2410c"}}>Edit Or Delete</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -69,16 +72,31 @@ export default function Products() {
                   <TableCell>{product.price}</TableCell>
                   <TableCell>{Array.isArray(product.selectedSize) ? product.selectedSize.join(', ') : ''}</TableCell>
                   <TableCell>{Array.isArray(product.selectedCategories) ? product.selectedCategories.join(', ') : ''}</TableCell>
-                  <TableCell>{(product.images || []).map(image => image.name).join(', ')}</TableCell>
+                  <TableCell>{Array.isArray(product.selectedColors) ? product.selectedColors.join(', ') : ''}</TableCell>
+                  <TableCell>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
+                      {product.images.map((image, idx) => (
+                        <Image
+                          key={idx}
+                          src={typeof image === 'string' ? image : URL.createObjectURL(image)}
+                          alt={`Product Image ${idx + 1}`}
+                          style={{  objectFit: 'cover', borderRadius: '5px' }}
+                          width={50}
+                          height={50}
+                        />
+                      ))}
+                    </div>
+                  </TableCell>
                   <TableCell>
                     <IconButton
                       onClick={() => handleEditProduct(index)}
-                      className='text-orange-400'
+                      sx={{color:"#fb923c"}}
                     >
                       <EditIcon />
                     </IconButton>
                     <IconButton
                       onClick={() => handleDeleteProduct(index)}
+                      sx={{color:"#b91c1c"}}
                       className='text-red-700'
                     >
                       <DeleteIcon />
