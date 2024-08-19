@@ -1,20 +1,41 @@
-import * as React from "react";
 import {
-  AppBar, Box, CssBaseline, Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography, Avatar, Button
+  AppBar,
+  Box,
+  CssBaseline,
+  Divider,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Toolbar,
+  Typography,
+  Avatar,
+  Button,
 } from "@mui/material";
-import { Menu as MenuIcon, Dashboard as DashboardIcon, ShoppingCart as ShoppingCartIcon } from "@mui/icons-material";
+import {
+  Menu as MenuIcon,
+  Dashboard as DashboardIcon,
+  ShoppingCart as ShoppingCartIcon,
+} from "@mui/icons-material";
 import { useRouter } from "next/router";
+import { useState } from "react";
 
 const drawerWidth = 240;
 
 const NavAndSideBar = (props) => {
   const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [isClosing, setIsClosing] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
   const router = useRouter();
 
   const handleDrawerToggle = () => !isClosing && setMobileOpen(!mobileOpen);
-  const handleDrawerClose = () => { setIsClosing(true); setMobileOpen(false); };
+  const handleDrawerClose = () => {
+    setIsClosing(true);
+    setMobileOpen(false);
+  };
   const handleDrawerTransitionEnd = () => setIsClosing(false);
   const isActive = (path) => router.pathname === path;
   const logoutUser = () => {
@@ -24,15 +45,25 @@ const NavAndSideBar = (props) => {
   };
 
   const drawerItems = [
-    { text: "Dashboard", icon: <DashboardIcon className="text-orange-600" />, href: "/" },
-    { text: "Products", icon: <ShoppingCartIcon className="text-orange-600" />, href: "/products" }
+    {
+      text: "Dashboard",
+      icon: <DashboardIcon className="text-orange-600" />,
+      href: "/",
+    },
+    {
+      text: "Products",
+      icon: <ShoppingCartIcon className="text-orange-600" />,
+      href: "/products",
+    },
   ];
 
   const drawer = (
     <div>
       <Box sx={{ display: "flex", alignItems: "center", p: 1.5 }}>
         <Avatar alt="Admin" src="/path/to/profile.jpg" sx={{ mr: 2 }} />
-        <Typography variant="h6" className="text-orange-500">Admin Name</Typography>
+        <Typography variant="h6" className="text-orange-500">
+          Admin Name
+        </Typography>
       </Box>
       <Divider />
       <List>
@@ -42,9 +73,9 @@ const NavAndSideBar = (props) => {
               component="a"
               href={href}
               sx={{
-                width: '100%',
-                backgroundColor: isActive(href) ? '#fbd38d' : 'inherit',
-                '&:hover': { backgroundColor: '#fed7aa' },
+                width: "100%",
+                backgroundColor: isActive(href) ? "#fbd38d" : "inherit",
+                "&:hover": { backgroundColor: "#fed7aa" },
               }}
             >
               <ListItemIcon>{icon}</ListItemIcon>
@@ -57,14 +88,18 @@ const NavAndSideBar = (props) => {
     </div>
   );
 
-  const container = window !== undefined ? () => window().document.body : undefined;
+  const container =
+    window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar
         position="fixed"
-        sx={{ width: { sm: `calc(100% - ${drawerWidth}px)` }, ml: { sm: `${drawerWidth}px` } }}
+        sx={{
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          ml: { sm: `${drawerWidth}px` },
+        }}
       >
         <Toolbar className="bg-slate-100">
           <IconButton
@@ -76,12 +111,19 @@ const NavAndSideBar = (props) => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            <p className="text-lg font-bold text-orange-400 font-serif italic">SARAMODA</p>
+            <p className="text-lg font-bold text-orange-400 font-serif italic">
+              SARAMODA
+            </p>
             <p className="text-xs text-orange-800">control panel</p>
           </Typography>
           <Box sx={{ display: "flex", gap: 1 }}>
             <Button
-              sx={{ border: "1px solid #fb923c", backgroundColor: "orange", color: "#fff", "&:hover": { backgroundColor: "#ea580c" } }}
+              sx={{
+                border: "1px solid #fb923c",
+                backgroundColor: "orange",
+                color: "#fff",
+                "&:hover": { backgroundColor: "#ea580c" },
+              }}
               onClick={logoutUser}
             >
               Logout
@@ -89,7 +131,11 @@ const NavAndSideBar = (props) => {
           </Box>
         </Toolbar>
       </AppBar>
-      <Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }} aria-label="mailbox folders">
+      <Box
+        component="nav"
+        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+        aria-label="mailbox folders"
+      >
         <Drawer
           container={container}
           variant="temporary"
@@ -99,7 +145,11 @@ const NavAndSideBar = (props) => {
           ModalProps={{ keepMounted: true }}
           sx={{
             display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth, backgroundColor: "#f1f5f9" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+              backgroundColor: "#f1f5f9",
+            },
           }}
         >
           {drawer}
@@ -108,7 +158,11 @@ const NavAndSideBar = (props) => {
           variant="permanent"
           sx={{
             display: { xs: "none", sm: "block" },
-            "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth, backgroundColor: "#f1f5f9" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+              backgroundColor: "#f1f5f9",
+            },
           }}
           open
         >
