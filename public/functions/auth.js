@@ -17,7 +17,7 @@ exports.isLogin = async () => {
     );
     return true;
   } catch (err) {
-    return false;
+    throw err;
   }
 };
 
