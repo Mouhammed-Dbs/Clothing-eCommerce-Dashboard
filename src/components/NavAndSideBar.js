@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   AppBar,
   Box,
@@ -69,18 +70,19 @@ const NavAndSideBar = (props) => {
       <List>
         {drawerItems.map(({ text, icon, href }) => (
           <ListItem disablePadding key={text}>
-            <ListItemButton
-              component="a"
-              href={href}
-              sx={{
-                width: "100%",
-                backgroundColor: isActive(href) ? "#fbd38d" : "inherit",
-                "&:hover": { backgroundColor: "#fed7aa" },
-              }}
-            >
-              <ListItemIcon>{icon}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
+            <Link href={href} passHref legacyBehavior>
+              <ListItemButton
+                component="a"
+                sx={{
+                  width: "100%",
+                  backgroundColor: isActive(href) ? "#fbd38d" : "inherit",
+                  "&:hover": { backgroundColor: "#fed7aa" },
+                }}
+              >
+                <ListItemIcon>{icon}</ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItemButton>
+            </Link>
           </ListItem>
         ))}
       </List>
