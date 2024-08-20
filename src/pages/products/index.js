@@ -13,6 +13,7 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Products() {
   const router = useRouter();
@@ -40,22 +41,24 @@ export default function Products() {
 
   return (
     <div style={{ padding: "20px" }}>
-      <Button
-        href="/products/add-products"
-        variant="contained"
-        startIcon={<AddCircleIcon className="text-white" />}
-        sx={{
-          border: "1px solid #fb923c",
-          backgroundColor: "orange",
-          color: "#fff",
-          "&:hover": { backgroundColor: "#ea580c" },
-          textTransform: "none",
-          fontSize: "16px",
-        }}
-        style={{ marginBottom: "20px" }}
-      >
-        Add Product
-      </Button>
+      <Link href={"/products/add-products"} passHref legacyBehavior>
+        <Button
+          href="/products/add-products"
+          variant="contained"
+          startIcon={<AddCircleIcon className="text-white" />}
+          sx={{
+            border: "1px solid #fb923c",
+            backgroundColor: "orange",
+            color: "#fff",
+            "&:hover": { backgroundColor: "#ea580c" },
+            textTransform: "none",
+            fontSize: "16px",
+          }}
+          style={{ marginBottom: "20px" }}
+        >
+          Add Product
+        </Button>
+      </Link>
       {products.length > 0 && (
         <TableContainer
           component={Paper}
