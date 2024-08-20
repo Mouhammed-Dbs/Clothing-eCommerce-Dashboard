@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { isLogin } from "../../public/functions/auth";
 import { Spinner } from "@nextui-org/react";
-import {NextUIProvider} from "@nextui-org/system";
+import { NextUIProvider } from "@nextui-org/system";
 
 export default function App({ Component, pageProps }) {
   const router = useRouter();
@@ -23,7 +23,7 @@ export default function App({ Component, pageProps }) {
 
   useEffect(() => {
     getUserLoginStatus();
-  }, [router]);
+  }, []);
 
   if (loading) {
     return (
