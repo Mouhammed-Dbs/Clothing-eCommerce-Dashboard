@@ -6,25 +6,26 @@ import { useRouter } from "next/router";
 
 export default function HomeLayout({ children }) {
   const router = useRouter();
-  const [mounted, setMounted] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
+
   useEffect(() => {
-    isLogin()
-      .then((logged) => {
+    const checkLogin = async () => {
+      try {
+        const logged = await isLogin();
         if (!logged) {
-          router.replace("/login");
+          await router.replace("/login");
         } else {
           setPageLoading(false);
-          setMounted(true);
         }
-      })
-      .catch(async (err) => {
+      } catch (err) {
         await router.replace("/login");
-        setPageLoading(false);
-      });
-  }, []);
+      }
+    };
 
-  if (!mounted || pageLoading)
+    checkLogin();
+  }, [router]);
+
+  if (pageLoading)
     return (
       <main className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-orange-200 via-orange-300 to-orange-400 px-4 text-center">
         <div className="bg-white p-6 rounded-xl shadow-lg max-w-sm w-full">
