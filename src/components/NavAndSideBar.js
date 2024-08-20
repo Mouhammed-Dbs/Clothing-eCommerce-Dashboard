@@ -42,7 +42,7 @@ const NavAndSideBar = (props) => {
   const logoutUser = () => {
     localStorage.removeItem("d-token");
     sessionStorage.removeItem("d-token");
-    router.replace("/");
+    router.replace("/login");
   };
 
   const drawerItems = [

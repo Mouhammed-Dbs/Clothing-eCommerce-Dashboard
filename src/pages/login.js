@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { login } from "../../public/functions/auth";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import Link from "next/link";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -103,12 +104,12 @@ export default function Login() {
               </label>
             </div>
             <div className="text-sm">
-              <a
-                href="#"
+              <Link
+                href="/forget-password"
                 className="font-medium text-orange-600 hover:text-orange-500"
               >
                 Forgot your password?
-              </a>
+              </Link>
             </div>
           </div>
           <button
