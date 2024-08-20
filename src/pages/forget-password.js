@@ -15,8 +15,8 @@ export default function ForgetPassword() {
   const [step, setStep] = useState(1);
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false); // حالة إظهار أو إخفاء كلمة المرور
-  const [isSuccess, setIsSuccess] = useState(false); // حالة لتحديد إذا كانت العملية ناجحة
+  const [showPassword, setShowPassword] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -27,7 +27,7 @@ export default function ForgetPassword() {
     setIsLoading(true);
     try {
       const response = await forgetPassword(email);
-      setIsSuccess(response.data.status === "Success"); // تحديث حالة النجاح
+      setIsSuccess(response.data.status === "Success");
       setMessage(
         response.data.message || "Failed to send reset code. Please try again."
       );
@@ -50,7 +50,7 @@ export default function ForgetPassword() {
     setIsLoading(true);
     try {
       const response = await verifyPassResetCode(resetCode);
-      setIsSuccess(response.data.status === "Success"); // تحديث حالة النجاح
+      setIsSuccess(response.data.status === "Success");
 
       if (response.data.status === "Success") {
         setStep(3);
@@ -78,7 +78,7 @@ export default function ForgetPassword() {
     setIsLoading(true);
     try {
       const response = await resetPassword(email, newPassword);
-      setIsSuccess(response.data.status === "Success"); // تحديث حالة النجاح
+      setIsSuccess(response.data.status === "Success");
       if (response.data.status === "Success") {
         setMessage(
           response.data.message || "The password has been reset successfully."
@@ -102,7 +102,10 @@ export default function ForgetPassword() {
 
   return (
     <div className="p-4 md:p-8 lg:p-12 xl:p-16 min-h-screen bg-gradient-to-br from-orange-200 via-orange-300 to-orange-400 flex flex-col justify-center items-center">
-      <div className="bg-white rounded-lg shadow-md p-6 md:p-8 lg:p-10 xl:p-12 transform transition-transform duration-300 lg:max-w-2xl xl:max-w-xl mx-auto border-t-4 border-orange-500">
+      <div
+        className="bg-white rounded-lg shadow-md p-6 md:p-8 lg:p-10 xl:p-12 transform transition-transform duration-300 border-t-4 border-orange-500"
+        style={{ width: "100%", maxWidth: "400px" }}
+      >
         <h2 className="text-2xl lg:text-3xl xl:text-4xl font-bold mb-4 text-center text-orange-500">
           Forgot Password
         </h2>
@@ -176,7 +179,7 @@ export default function ForgetPassword() {
             className="flex flex-col relative"
           >
             <input
-              type={showPassword ? "text" : "password"} // تحديد نوع الإدخال بناءً على حالة إظهار أو إخفاء كلمة المرور
+              type={showPassword ? "text" : "password"}
               placeholder="New Password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
