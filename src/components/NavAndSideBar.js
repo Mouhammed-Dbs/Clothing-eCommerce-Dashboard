@@ -42,6 +42,7 @@ const NavAndSideBar = (props) => {
   const logoutUser = () => {
     localStorage.removeItem("d-token");
     sessionStorage.removeItem("d-token");
+    localStorage.removeItem("account-info");
     router.replace("/login");
   };
 
