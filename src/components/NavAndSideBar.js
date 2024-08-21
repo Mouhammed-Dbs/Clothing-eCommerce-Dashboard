@@ -22,7 +22,7 @@ import {
   ShoppingCart as ShoppingCartIcon,
 } from "@mui/icons-material";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const drawerWidth = 240;
 
@@ -30,7 +30,17 @@ const NavAndSideBar = (props) => {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const [user, setUser] = useState({ name: "Admin Name", role: "role" });
   const router = useRouter();
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const userInfo = JSON.parse(localStorage.getItem("account-info"));
+      if (userInfo) {
+        setUser({ name: userInfo.name, role: userInfo.role });
+      }
+    }
+  }, []);
 
   const handleDrawerToggle = () => !isClosing && setMobileOpen(!mobileOpen);
   const handleDrawerClose = () => {
@@ -62,10 +72,15 @@ const NavAndSideBar = (props) => {
   const drawer = (
     <div>
       <Box sx={{ display: "flex", alignItems: "center", p: 1.5 }}>
-        <Avatar alt="Admin" src="/path/to/profile.jpg" sx={{ mr: 2 }} />
-        <Typography variant="h6" className="text-orange-500">
-          Admin Name
-        </Typography>
+        <Avatar alt={user.name} src="/path/to/profile.jpg" sx={{ mr: 2 }} />
+        <Box>
+          <Typography variant="subtitle1" className="text-orange-500">
+            {user.name}
+          </Typography>
+          <Typography variant="body2" color="textSecondary">
+            {user.role}
+          </Typography>
+        </Box>
       </Box>
       <Divider />
       <List>
