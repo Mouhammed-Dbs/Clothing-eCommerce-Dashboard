@@ -12,7 +12,6 @@ import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import CircularProgress from "@mui/material/CircularProgress";
 import Image from "next/image";
 import Link from "next/link";
 import TextField from "@mui/material/TextField";
@@ -20,7 +19,12 @@ import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import { getProducts } from "../../../public/functions/product";
+import Checkbox from "@mui/material/Checkbox";
+import ListItemText from "@mui/material/ListItemText";
+import {
+  getProducts,
+  getSubCategories,
+} from "../../../public/functions/product";
 import { Spinner } from "@nextui-org/react";
 
 export default function Products() {
@@ -31,22 +35,49 @@ export default function Products() {
   const [hasMore, setHasMore] = useState(true);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [sortOption, setSortOption] = useState("");
+  const [subCategories, setSubCategories] = useState([]);
+  const [selectedSubCategories, setSelectedSubCategories] = useState([]);
+  const [numLastResults, setNumLastResult] = useState(0);
+
+  useEffect(() => {
+    const fetchSubCategories = async () => {
+      try {
+        const res = await getSubCategories();
+        if (!res.error) {
+          setSubCategories([
+            { _id: "all", name: "All Categories" },
+            ...res.data.data,
+          ]);
+        }
+      } catch (error) {
+        console.error("Failed to fetch subcategories:", error);
+      }
+    };
+    fetchSubCategories();
+  }, []);
 
   useEffect(() => {
     setCurrentPage(1);
     setHasMore(true);
     fetchProducts(1, true);
-  }, [searchKeyword, sortOption]);
+  }, [searchKeyword, sortOption, selectedSubCategories]);
 
   const fetchProducts = async (page, reset = false) => {
     setLoading(true);
     try {
-      const query = new URLSearchParams({
+      const q = {
         page: page,
         limit: 5,
         keyword: searchKeyword,
         sort: sortOption,
-      }).toString();
+        subcategories: selectedSubCategories.join(","),
+      };
+      if (
+        selectedSubCategories.length == 0 ||
+        selectedSubCategories.includes("all")
+      )
+        delete q.subcategories;
+      const query = new URLSearchParams(q).toString();
 
       const res = await getProducts(query);
 
@@ -59,7 +90,7 @@ export default function Products() {
         ) {
           setHasMore(false);
         }
-
+        setNumLastResult(res.data.results);
         setProducts((prevProducts) =>
           reset ? newProducts : [...prevProducts, ...newProducts]
         );
@@ -78,6 +109,19 @@ export default function Products() {
   const handleDeleteProduct = (index) => {
     const newProducts = products.filter((_, i) => i !== index);
     setProducts(newProducts);
+  };
+
+  const handleSubCategoryChange = (event) => {
+    const value = event.target.value;
+    const filteredValue = value.filter((v) => v !== "all");
+    const filteredSubCategories = subCategories
+      .filter((category) => category._id !== "all")
+      .map((category) => category._id);
+    if (value.includes("all")) {
+      setSelectedSubCategories(filteredSubCategories);
+    } else {
+      setSelectedSubCategories(filteredValue);
+    }
   };
 
   return (
@@ -101,7 +145,6 @@ export default function Products() {
         </Button>
       </Link>
 
-      {/* Search and Sort Bar */}
       <div
         style={{
           display: "flex",
@@ -111,7 +154,6 @@ export default function Products() {
           gap: "10px",
         }}
       >
-        {/* Search Field */}
         <TextField
           placeholder="Search products"
           value={searchKeyword}
@@ -148,7 +190,6 @@ export default function Products() {
           }}
         />
 
-        {/* Sort Dropdown */}
         <Select
           value={sortOption}
           onChange={(e) => setSortOption(e.target.value)}
@@ -174,6 +215,57 @@ export default function Products() {
           <MenuItem value="-price">Higher price</MenuItem>
           <MenuItem value="createdAt">Oldest</MenuItem>
           <MenuItem value="-createdAt">Newest</MenuItem>
+        </Select>
+
+        <Select
+          multiple
+          value={selectedSubCategories}
+          onChange={handleSubCategoryChange}
+          variant="outlined"
+          size="small"
+          displayEmpty
+          sx={{
+            minWidth: "200px",
+            backgroundColor: "#ffffff",
+            borderRadius: "5px",
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": {
+                borderColor: "#fb923c",
+              },
+              "&:hover fieldset": {
+                borderColor: "#ea580c",
+              },
+            },
+          }}
+          renderValue={(selected) =>
+            selected.length === 0 ||
+            subCategories.filter((category) => category._id !== "all").length ==
+              selected.length
+              ? "All Categories"
+              : selected
+                  .map((id) => {
+                    const subCategory = subCategories.find(
+                      (sub) => sub._id === id
+                    );
+                    return subCategory ? subCategory.name : "";
+                  })
+                  .join(", ")
+          }
+        >
+          {subCategories.map((subCategory) => (
+            <MenuItem key={subCategory._id} value={subCategory._id}>
+              <Checkbox
+                checked={
+                  subCategory._id != "all"
+                    ? selectedSubCategories.includes(subCategory._id)
+                    : selectedSubCategories.length === 0 ||
+                      subCategories.filter((category) => category._id !== "all")
+                        .length == selectedSubCategories.length
+                }
+              />
+              <ListItemText primary={subCategory.name} />
+            </MenuItem>
+          ))}
         </Select>
       </div>
 
@@ -218,7 +310,11 @@ export default function Products() {
                   <TableCell>{product.description}</TableCell>
                   <TableCell>{product.price}</TableCell>
                   <TableCell>{product.size.join(", ")}</TableCell>
-                  <TableCell>{product.category.name}</TableCell>
+                  <TableCell className="flex justify-center items-center">
+                    {product.subcategories.map((subCategory) => (
+                      <span key={subCategory._id}>{subCategory.name}</span>
+                    ))}
+                  </TableCell>
                   <TableCell>{product.colors.join(", ")}</TableCell>
                   <TableCell>
                     <Image
@@ -235,22 +331,6 @@ export default function Products() {
                       height={50}
                     />
                   </TableCell>
-                  {/* <TableCell>
-                    <div
-                      style={{ display: "flex", flexWrap: "wrap", gap: "5px" }}
-                    >
-                      {product.images.map((image, idx) => (
-                        <Image
-                          key={idx}
-                          src={image}
-                          alt={`Product Image ${idx + 1}`}
-                          style={{ objectFit: "cover", borderRadius: "5px" }}
-                          width={50}
-                          height={50}
-                        />
-                      ))}
-                    </div>
-                  </TableCell> */}
                   <TableCell>
                     <IconButton
                       onClick={() => handleEditProduct(index)}
@@ -285,7 +365,7 @@ export default function Products() {
         </div>
       )}
 
-      {hasMore && !loading && (
+      {hasMore && !loading && numLastResults != 0 && (
         <div
           style={{
             display: "flex",
@@ -307,6 +387,17 @@ export default function Products() {
           >
             Load More
           </Button>
+        </div>
+      )}
+      {numLastResults == 0 && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "20px",
+          }}
+        >
+          <p>No more products</p>
         </div>
       )}
     </div>
