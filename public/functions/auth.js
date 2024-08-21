@@ -27,7 +27,7 @@ exports.login = async (email, password, rememberMe) => {
       `${process.env.BASE_API_URL}/api/v1/auth/dashboard-login`,
       { email, password }
     );
-    localStorage.setItem("account-info", res.data.data);
+    localStorage.setItem("account-info", JSON.stringify(res.data.data));
     if (rememberMe) {
       localStorage.setItem("d-token", res.data.token);
     } else {
