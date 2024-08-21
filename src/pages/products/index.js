@@ -37,7 +37,7 @@ export default function Products() {
   const [sortOption, setSortOption] = useState("");
   const [subCategories, setSubCategories] = useState([]);
   const [selectedSubCategories, setSelectedSubCategories] = useState([]);
-  const [numLastResults, setNumLastResult] = useState(0);
+  const [numLastResults, setNumLastResult] = useState(-1);
 
   useEffect(() => {
     const fetchSubCategories = async () => {
