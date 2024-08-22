@@ -1,66 +1,114 @@
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { Tooltip, Input, Button, Spacer } from '@nextui-org/react';
-import Select from 'react-select';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { Tooltip, Input, Button, Spacer } from "@nextui-org/react";
+import Select from "react-select";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import {
+  getSubCategories,
+  addProducts,
+} from "../../../public/functions/product";
 
 const customStyles = {
-  control: (provided) => ({ ...provided, borderColor: 'orange', boxShadow: 'none', cursor: 'pointer', padding: '4px', backgroundColor: 'white', '&:hover': { borderColor: 'orange' } }),
-  option: (provided, state) => ({ ...provided, backgroundColor: state.isSelected ? 'orange' : 'white', color: state.isSelected ? 'white' : 'black', '&:hover': { backgroundColor: '#fb923c', cursor: 'pointer', color: 'white', fontWeight: 'bold' } }),
-  multiValue: (provided, state) => {
-    if (state.selectProps.name === 'selectedColors') {
-      const selectedColor = state.data.value;
-      return {
-        ...provided,
-        backgroundColor: selectedColor,
-        color: 'white',
-        borderRadius: '12px',
-        fontWeight: 'semibold'
-      };
-    }
-    return {
-      ...provided,
-      backgroundColor: 'orange',
-      color: 'white',
-      borderRadius: '12px',
-      fontWeight: 'bold'
-    };
-  },
-  multiValueLabel: (provided) => ({ ...provided, color: 'white' }),
-  multiValueRemove: (provided) => ({ ...provided, color: 'white', '&:hover': { backgroundColor: 'orange' } }),
+  control: (provided) => ({
+    ...provided,
+    borderColor: "orange",
+    boxShadow: "none",
+    cursor: "pointer",
+    padding: "4px",
+    backgroundColor: "white",
+    "&:hover": { borderColor: "orange" },
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    backgroundColor: state.isSelected ? "orange" : "white",
+    color: state.isSelected ? "white" : "black",
+    "&:hover": {
+      backgroundColor: "#fb923c",
+      cursor: "pointer",
+      color: "white",
+      fontWeight: "bold",
+    },
+  }),
+  multiValue: (provided) => ({
+    ...provided,
+    backgroundColor: "orange",
+    color: "white",
+    borderRadius: "12px",
+    fontWeight: "bold",
+  }),
+  multiValueLabel: (provided) => ({ ...provided, color: "white" }),
+  multiValueRemove: (provided) => ({
+    ...provided,
+    color: "white",
+    "&:hover": { backgroundColor: "orange" },
+  }),
 };
 
-export default function AddProducts() {
+export default function AddProductsPage() {
   const [product, setProduct] = useState({
+    title: "",
+    description: "",
+    price: "",
+    quantity: "",
+    imageCover: null,
+    images: [],
+    category: "66ba082cbc9bbcd6bc0f16c1",
+    subcategories: [],
+    selectedSizes: [],
+    selectedColors: [],
+    sizes: ["S", "M", "L", "XL", "XXL"],
     colors: ["Red", "Blue", "Green", "Yellow"],
-    categories: ["Shoes", "Clothing", "Accessories", "Jeans"],
-    name: '', description: '', price: '', size: ["S", "M", "L", "XL", "XXL"],
-    images: [], selectedColors: [], selectedCategories: [], selectedSize: []
   });
-  const [isClient, setIsClient] = useState(false);
-  const [editIndex, setEditIndex] = useState(null);
-  const router = useRouter();
+
+  const [subCategories, setSubCategories] = useState([]);
   const [visible, setVisible] = useState(false);
-  const [newOption, setNewOption] = useState('');
-  const [optionType, setOptionType] = useState('');
+  const [newOption, setNewOption] = useState("");
+  const [optionType, setOptionType] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
-    setIsClient(true);
-    const { edit } = router.query;
-    if (edit !== undefined) {
-      const storedProducts = JSON.parse(localStorage.getItem('products')) || [];
-      setProduct(storedProducts[edit]);
-      setEditIndex(edit);
-    }
-  }, [router.query]);
+    const fetchSubCategories = async () => {
+      const response = await getSubCategories();
+      if (!response.error) {
+        setSubCategories(response.data.data);
+      } else {
+        console.error("Failed to fetch subcategories:", response.data);
+      }
+    };
+
+    fetchSubCategories();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    setProduct({ ...product, [name]: name === 'images' ? Array.from(files) : value });
+
+    setProduct({
+      ...product,
+      [name]:
+        name === "imageCover"
+          ? Array.from(files)[0]
+          : name === "images"
+          ? Array.from(files)
+          : value,
+    });
   };
 
   const handleSelectChange = (name, selectedOptions) => {
-    setProduct({ ...product, [name]: selectedOptions ? selectedOptions.map(option => option.value) : [] });
+    setProduct({
+      ...product,
+      [name]: selectedOptions
+        ? selectedOptions.map((option) => option.value)
+        : [],
+    });
+  };
+
+  const handleAddProduct = async () => {
+    try {
+      await addProducts(product);
+      router.push("/products");
+    } catch (error) {
+      console.error("Error adding product:", error);
+    }
   };
 
   const handleAddNewOptions = (OptionType) => {
@@ -70,139 +118,290 @@ export default function AddProducts() {
 
   const closeHandler = () => {
     setVisible(false);
-    setNewOption('');
+    setNewOption("");
   };
 
   const addNewOption = () => {
     if (newOption) {
-      setProduct({ ...product, [optionType]: [...product[optionType], newOption] });
+      setProduct({
+        ...product,
+        [optionType]: [...product[optionType], newOption],
+      });
       closeHandler();
     }
   };
-
-  const handleAddOrUpdateProduct = () => {
-    if (!product.name || !product.description || !product.price || !product.size) {
-      alert('Please fill in all fields');
-      return;
-    }
-    const storedProducts = JSON.parse(localStorage.getItem('products')) || [];
-    const productToStore = { ...product, images: product.images.map(file => (typeof file === 'string' ? file : file.name)) };
-
-    if (editIndex !== null) {
-      storedProducts[editIndex] = productToStore;
-    } else {
-      storedProducts.push(productToStore);
-    }
-
-    try {
-      localStorage.setItem('products', JSON.stringify(storedProducts));
-      router.push('/products');
-      setProduct({ name: '', description: '', price: '', size: '', images: [], selectedCategories: [], selectedSize: [], selectedColors: [] });
-      setEditIndex(null);
-    } catch (error) {
-      console.error('Error serializing products:', error);
-    }
-  };
-
-  if (!isClient) return null;
 
   return (
     <>
       <div className="min-h-screen bg-gradient-to-br from-orange-200 via-orange-300 to-orange-400 p-6">
         <div className="max-w-xl mx-auto p-5 font-sans bg-slate-100 shadow-2xl rounded-lg">
           <h1 className="text-4xl font-extrabold text-center text-orange-500 mb-2">
-            {editIndex !== null ? 'Edit Product' : 'Add Product'}
+            Add Product
           </h1>
           <form className="flex flex-col gap-2 mb-6">
+            {/* Categories Input */}
             <div>
-              <label className="text-lg font-semibold text-orange-500 mb-2 inline-block">Categories</label>
-              <div className='flex flex-row gap-5 items-center'>
-                <Select 
+              <label className="text-lg font-semibold text-orange-500 mb-2 inline-block">
+                Subcategories
+              </label>
+              <div className="flex flex-row gap-5 items-center">
+                <Select
                   isMulti
-                  name="selectedCategories"
-                  placeholder="Select categories"
-                  value={product.selectedCategories.map(category => ({ value: category, label: category }))}
-                  onChange={(selectedOptions) => handleSelectChange('selectedCategories', selectedOptions)}
-                  options={(product.categories || []).map(category => ({ value: category, label: category }))}
+                  name="subcategories"
+                  placeholder="Select subcategories"
+                  value={product.subcategories.map((id) => {
+                    const subCategory = subCategories.find(
+                      (sub) => sub._id === id
+                    );
+                    return subCategory
+                      ? { value: subCategory._id, label: subCategory.name }
+                      : null;
+                  })}
+                  onChange={(selectedOptions) =>
+                    handleSelectChange("subcategories", selectedOptions)
+                  }
+                  options={subCategories.map((sub) => ({
+                    value: sub._id,
+                    label: sub.name,
+                  }))}
                   styles={customStyles}
-                  className='w-full'
+                  className="w-full"
                 />
-                <Tooltip content='Click to add new category ' color='primary'>
-                  <Button onClick={() => handleAddNewOptions('categories')} color="primary" auto isIconOnly>
-                    <AddCircleIcon />
-                  </Button>
-                </Tooltip>
               </div>
             </div>
-            <label className="text-lg font-semibold text-orange-500  inline-block">Name</label>
-            <Input variant='bordered' size='lg' color='primary' classNames={{ input:"text-red-500 font-semibold text-black", base: 'bg-transparent rounded-xl', inputWrapper: 'bg-white', innerWrapper:"bg-transparent"}} type="text" name="name" placeholder="Product Name" value={product.name} onChange={handleChange} radius="sm"/>
-            <label className="text-lg font-semibold text-orange-400  inline-block">Price</label>
-            <Input variant='bordered' size='lg' color='primary' classNames={{ input:"text-red-500 font-semibold text-black", base: 'bg-transparent rounded-xl', inputWrapper: 'bg-white', innerWrapper:"bg-transparent"}} type="number" name="price" placeholder="Product Price" value={product.price} onChange={handleChange} radius="sm" startContent={<div className="pointer-events-none flex items-center"><span className="text-orange-4000 text-lg">$</span></div>}/>
-            <label className="text-lg font-semibold text-orange-500 inline-block">Sizes</label>
-            <div className='flex flex-row gap-5 items-center'>
+
+            {/* Name Input */}
+            <label className="text-lg font-semibold text-orange-500 inline-block">
+              Name
+            </label>
+            <Input
+              variant="bordered"
+              size="lg"
+              color="primary"
+              classNames={{
+                input: "text-red-500 font-semibold text-black",
+                base: "bg-transparent rounded-xl",
+                inputWrapper: "bg-white",
+                innerWrapper: "bg-transparent",
+              }}
+              type="text"
+              name="title"
+              placeholder="Product Name"
+              value={product.title}
+              onChange={handleChange}
+              radius="sm"
+            />
+
+            {/* Price Input */}
+            <label className="text-lg font-semibold text-orange-400 inline-block">
+              Price
+            </label>
+            <Input
+              variant="bordered"
+              size="lg"
+              color="primary"
+              classNames={{
+                input: "text-red-500 font-semibold text-black",
+                base: "bg-transparent rounded-xl",
+                inputWrapper: "bg-white",
+                innerWrapper: "bg-transparent",
+              }}
+              type="number"
+              name="price"
+              placeholder="Product Price"
+              value={product.price}
+              onChange={handleChange}
+              radius="sm"
+              startContent={
+                <div className="pointer-events-none flex items-center">
+                  <span className="text-orange-4000 text-lg">$</span>
+                </div>
+              }
+            />
+
+            {/* Quantity Input */}
+            <label className="text-lg font-semibold text-orange-500 inline-block">
+              Quantity
+            </label>
+            <Input
+              variant="bordered"
+              size="lg"
+              color="primary"
+              classNames={{
+                input: "text-red-500 font-semibold text-black",
+                base: "bg-transparent rounded-xl",
+                inputWrapper: "bg-white",
+                innerWrapper: "bg-transparent",
+              }}
+              type="number"
+              name="quantity"
+              placeholder="Product Quantity"
+              value={product.quantity}
+              onChange={handleChange}
+              radius="sm"
+            />
+
+            {/* Sizes Input */}
+            <label className="text-lg font-semibold text-orange-500 inline-block">
+              Sizes
+            </label>
+            <div className="flex flex-row gap-5 items-center">
               <Select
                 isMulti
-                name="selectedSize"
+                name="selectedSizes"
                 placeholder="Select sizes"
-                value={product.selectedSize.map(size => ({ value: size, label: size }))}
-                onChange={(selectedOptions) => handleSelectChange('selectedSize', selectedOptions)}
-                options={(product.size || []).map(size => ({ value: size, label: size }))}
+                value={product.selectedSizes.map((size) => ({
+                  value: size,
+                  label: size,
+                }))}
+                onChange={(selectedOptions) =>
+                  handleSelectChange("selectedSizes", selectedOptions)
+                }
+                options={product.sizes.map((size) => ({
+                  value: size,
+                  label: size,
+                }))}
                 styles={customStyles}
-                className='w-full'
+                className="w-full"
               />
-              <Tooltip content='Click to add new size ' color='primary'>
-                <Button onClick={() => handleAddNewOptions('size')} color="primary" auto isIconOnly>
+              <Tooltip content="Click to add new size" color="primary">
+                <Button
+                  onClick={() => handleAddNewOptions("sizes")}
+                  color="primary"
+                  auto
+                  isIconOnly
+                >
                   <AddCircleIcon />
                 </Button>
               </Tooltip>
             </div>
-            <label className="text-lg font-semibold text-orange-500 inline-block">Colors</label>
-            <div className='flex flex-row gap-5 items-center'>
+
+            {/* Colors Input */}
+            <label className="text-lg font-semibold text-orange-500 inline-block">
+              Colors
+            </label>
+            <div className="flex flex-row gap-5 items-center">
               <Select
                 isMulti
                 name="selectedColors"
                 placeholder="Select colors"
-                value={product.selectedColors.map(color => ({ value: color, label: color }))}
-                onChange={(selectedOptions) => handleSelectChange('selectedColors', selectedOptions)}
-                options={(product.colors || []).map(color => ({ value: color, label: color }))}
+                value={product.selectedColors.map((color) => ({
+                  value: color,
+                  label: color,
+                }))}
+                onChange={(selectedOptions) =>
+                  handleSelectChange("selectedColors", selectedOptions)
+                }
+                options={product.colors.map((color) => ({
+                  value: color,
+                  label: color,
+                }))}
                 styles={customStyles}
-                className='w-full'
+                className="w-full"
               />
-              <Tooltip content='Click to add new color ' color='primary'>
-                <Button onClick={() => handleAddNewOptions('colors')} color="primary" auto isIconOnly>
+              <Tooltip content="Click to add new color" color="primary">
+                <Button
+                  onClick={() => handleAddNewOptions("colors")}
+                  color="primary"
+                  auto
+                  isIconOnly
+                >
                   <AddCircleIcon />
                 </Button>
               </Tooltip>
             </div>
-            <label className="text-lg font-semibold text-orange-500 block">Description</label>
-            <Input variant='bordered' size='lg' color='primary' classNames={{ input:"font-semibold text-black", base: 'bg-transparent rounded-xl', inputWrapper: 'bg-white', innerWrapper:"bg-transparent"}} type="text" name="description" placeholder="Product Description" value={product.description} onChange={handleChange} radius="sm" />
-            <label className="text-lg font-semibold text-orange-500 block">Upload Product Images</label>
-            <input type="file" name="images" multiple onChange={handleChange} className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-300 transition duration-200 ease-in-out" />
-            <Spacer y={1} />
-            <Button onClick={handleAddOrUpdateProduct} color="primary" auto size='lg' className='font-extrabold'>
-              {editIndex !== null ? 'Update Product' : 'Add Product'}
+
+            {/* Description Input */}
+            <label className="text-lg font-semibold text-orange-500 inline-block">
+              Description
+            </label>
+            <Input
+              variant="bordered"
+              size="lg"
+              color="primary"
+              classNames={{
+                input: "text-red-500 font-semibold text-black",
+                base: "bg-transparent rounded-xl",
+                inputWrapper: "bg-white",
+                innerWrapper: "bg-transparent",
+              }}
+              type="text"
+              name="description"
+              placeholder="Product Description"
+              value={product.description}
+              onChange={handleChange}
+              radius="sm"
+            />
+
+            {/* Cover Image Input */}
+            <label className="text-lg font-semibold text-orange-500 inline-block">
+              Cover Image
+            </label>
+            <Input
+              variant="bordered"
+              size="lg"
+              color="primary"
+              type="file"
+              name="imageCover"
+              onChange={handleChange}
+              radius="sm"
+            />
+
+            {/* Additional Images Input */}
+            <label className="text-lg font-semibold text-orange-500 inline-block">
+              Additional Images
+            </label>
+            <Input
+              variant="bordered"
+              size="lg"
+              color="primary"
+              type="file"
+              name="images"
+              multiple
+              onChange={handleChange}
+              radius="sm"
+            />
+
+            <Button onClick={handleAddProduct} color="primary" auto>
+              Add Product
             </Button>
           </form>
         </div>
       </div>
+
+      {/* Add New Option Modal */}
       {visible && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-80">
-            <h3 className="text-lg font-bold text-orange-500 mb-4">Add New {optionType}</h3>
-            <input
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h2 className="text-xl font-bold mb-4">
+              Add New {optionType === "sizes" ? "Size" : "Color"}
+            </h2>
+            <Input
+              variant="bordered"
+              size="lg"
+              color="primary"
+              classNames={{
+                input: "text-red-500 font-semibold text-black",
+                base: "bg-transparent rounded-xl",
+                inputWrapper: "bg-white",
+                innerWrapper: "bg-transparent",
+              }}
               type="text"
-              className="w-full p-2 border border-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-300 rounded mb-4"
-              placeholder={`Enter new ${optionType}`}
+              name="newOption"
+              placeholder={`Enter new ${
+                optionType === "sizes" ? "size" : "color"
+              }`}
               value={newOption}
               onChange={(e) => setNewOption(e.target.value)}
+              radius="sm"
             />
-            <div className="flex justify-end gap-2">
-              <button className="px-4 py-2 border-orange-400 border-2 hover:bg-orange-300 hover:text-white transition duration-200 ease-in-out rounded" onClick={closeHandler}>
-                Cancel
-              </button>
-              <button className="px-4 py-2 bg-orange-400 hover:bg-orange-500 transition duration-200 ease-in-out text-white rounded" onClick={addNewOption}>
+            <div className="mt-4 flex gap-4">
+              <Button onClick={addNewOption} color="primary" auto>
                 Add
-              </button>
+              </Button>
+              <Button onClick={closeHandler} color="error" auto>
+                Cancel
+              </Button>
             </div>
           </div>
         </div>
