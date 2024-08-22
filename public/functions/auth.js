@@ -1,10 +1,8 @@
 const { default: axios } = require("axios");
+const { getToken } = require("./helpers");
 
 exports.isLogin = async () => {
-  const token =
-    localStorage.getItem("d-token") != undefined
-      ? localStorage.getItem("d-token")
-      : sessionStorage.getItem("d-token");
+  const token = getToken();
   if (!token) return false;
   try {
     const res = await axios.get(
