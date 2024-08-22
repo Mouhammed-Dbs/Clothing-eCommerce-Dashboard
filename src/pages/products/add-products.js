@@ -56,14 +56,16 @@ export default function AddProductsPage() {
     subcategories: [],
     selectedSizes: [],
     selectedColors: [],
-    sizes: ["S", "M", "L", "XL", "XXL"],
-    colors: ["Red", "Blue", "Green", "Yellow"],
+    sizes: ["Small", "Medium", "Large", "XL", "XXL"],
+    colors: ["White", "Black", "Red", "Blue", "Green", "Yellow"],
   });
 
   const [subCategories, setSubCategories] = useState([]);
   const [visible, setVisible] = useState(false);
   const [newOption, setNewOption] = useState("");
   const [optionType, setOptionType] = useState("");
+  const [loading, setLoading] = useState(false); // لحالة التحميل
+  const [errorMessage, setErrorMessage] = useState(""); // لرسالة الخطأ
   const router = useRouter();
 
   useEffect(() => {
@@ -103,11 +105,48 @@ export default function AddProductsPage() {
   };
 
   const handleAddProduct = async () => {
+    setErrorMessage(""); // إعادة تعيين رسالة الخطأ
+    const {
+      title,
+      description,
+      price,
+      quantity,
+      selectedColors,
+      selectedSizes,
+      subcategories,
+      imageCover,
+    } = product;
+
+    // تحقق من تعبئة الحقول الأساسية
+    if (
+      !title ||
+      !description ||
+      !price ||
+      !quantity ||
+      !imageCover ||
+      selectedColors.length === 0 ||
+      selectedSizes.length === 0 ||
+      subcategories.length === 0
+    ) {
+      setErrorMessage("Please fill out all required fields.");
+      return;
+    }
+
+    setLoading(true); // تعيين حالة التحميل إلى true
     try {
-      await addProducts(product);
+      await addProducts({
+        ...product,
+        selectedColors: product.selectedColors,
+        selectedSizes: product.selectedSizes,
+      });
       router.push("/products");
     } catch (error) {
       console.error("Error adding product:", error);
+      setErrorMessage(
+        error?.message || "Failed to add the product. Please try again."
+      );
+    } finally {
+      setLoading(false); // إعادة تعيين حالة التحميل إلى false
     }
   };
 
@@ -142,7 +181,7 @@ export default function AddProductsPage() {
             {/* Categories Input */}
             <div>
               <label className="text-lg font-semibold text-orange-500 mb-2 inline-block">
-                Subcategories
+                Subcategories *
               </label>
               <div className="flex flex-row gap-5 items-center">
                 <Select
@@ -172,7 +211,7 @@ export default function AddProductsPage() {
 
             {/* Name Input */}
             <label className="text-lg font-semibold text-orange-500 inline-block">
-              Name
+              Name *
             </label>
             <Input
               variant="bordered"
@@ -194,7 +233,7 @@ export default function AddProductsPage() {
 
             {/* Price Input */}
             <label className="text-lg font-semibold text-orange-400 inline-block">
-              Price
+              Price *
             </label>
             <Input
               variant="bordered"
@@ -221,7 +260,7 @@ export default function AddProductsPage() {
 
             {/* Quantity Input */}
             <label className="text-lg font-semibold text-orange-500 inline-block">
-              Quantity
+              Quantity *
             </label>
             <Input
               variant="bordered"
@@ -243,7 +282,7 @@ export default function AddProductsPage() {
 
             {/* Sizes Input */}
             <label className="text-lg font-semibold text-orange-500 inline-block">
-              Sizes
+              Sizes *
             </label>
             <div className="flex flex-row gap-5 items-center">
               <Select
@@ -278,7 +317,7 @@ export default function AddProductsPage() {
 
             {/* Colors Input */}
             <label className="text-lg font-semibold text-orange-500 inline-block">
-              Colors
+              Colors *
             </label>
             <div className="flex flex-row gap-5 items-center">
               <Select
@@ -313,7 +352,7 @@ export default function AddProductsPage() {
 
             {/* Description Input */}
             <label className="text-lg font-semibold text-orange-500 inline-block">
-              Description
+              Description *
             </label>
             <Input
               variant="bordered"
@@ -335,7 +374,7 @@ export default function AddProductsPage() {
 
             {/* Cover Image Input */}
             <label className="text-lg font-semibold text-orange-500 inline-block">
-              Cover Image
+              Cover Image *
             </label>
             <Input
               variant="bordered"
@@ -361,9 +400,18 @@ export default function AddProductsPage() {
               onChange={handleChange}
               radius="sm"
             />
-
-            <Button onClick={handleAddProduct} color="primary" auto>
-              Add Product
+            {errorMessage && (
+              <div className="text-red-500 text-center mb-4">
+                {errorMessage}
+              </div>
+            )}
+            <Button
+              onClick={handleAddProduct}
+              color="primary"
+              auto
+              disabled={loading} // تعطيل الزر أثناء التحميل
+            >
+              {loading ? "Adding..." : "Add Product"}
             </Button>
           </form>
         </div>
