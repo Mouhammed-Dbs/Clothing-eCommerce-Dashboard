@@ -308,7 +308,7 @@ export default function Products() {
                   <TableCell>{product.title}</TableCell>
                   <TableCell>{product.description}</TableCell>
                   <TableCell>{product.price}</TableCell>
-                  <TableCell>{product.size.join(", ")}</TableCell>
+                  <TableCell>{product.sizes.join(", ")}</TableCell>
                   <TableCell className="flex justify-center items-center">
                     {product.subcategories.map((subCategory) => (
                       <span key={subCategory._id}>{subCategory.name}</span>
