@@ -20,6 +20,7 @@ import {
   Menu as MenuIcon,
   Dashboard as DashboardIcon,
   ShoppingCart as ShoppingCartIcon,
+  FormatListBulletedSharp as CategoriesIcon,
 } from "@mui/icons-material";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
@@ -66,6 +67,11 @@ const NavAndSideBar = (props) => {
       text: "Products",
       icon: <ShoppingCartIcon className="text-orange-600" />,
       href: "/products",
+    },
+    {
+      text: "Categories",
+      icon: <CategoriesIcon className="text-orange-600" />,
+      href: "/categories",
     },
   ];
 
