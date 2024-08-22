@@ -126,25 +126,6 @@ export default function Products() {
 
   return (
     <div style={{ padding: "20px" }}>
-      <Link href={"/products/add-products"} passHref legacyBehavior>
-        <Button
-          href="/products/add-products"
-          variant="contained"
-          startIcon={<AddCircleIcon className="text-white" />}
-          sx={{
-            border: "1px solid #fb923c",
-            backgroundColor: "orange",
-            color: "#fff",
-            "&:hover": { backgroundColor: "#ea580c" },
-            textTransform: "none",
-            fontSize: "16px",
-          }}
-          style={{ marginBottom: "20px" }}
-        >
-          Add Product
-        </Button>
-      </Link>
-
       <div
         style={{
           display: "flex",
@@ -154,6 +135,24 @@ export default function Products() {
           gap: "10px",
         }}
       >
+        <Link href={"/products/add-products"} passHref legacyBehavior>
+          <Button
+            href="/products/add-products"
+            variant="contained"
+            startIcon={<AddCircleIcon className="text-white" />}
+            sx={{
+              height: "38px",
+              border: "1px solid #fb923c",
+              backgroundColor: "orange",
+              color: "#fff",
+              "&:hover": { backgroundColor: "#ea580c" },
+              textTransform: "none",
+              fontSize: "16px",
+            }}
+          >
+            Add
+          </Button>
+        </Link>
         <TextField
           placeholder="Search products"
           value={searchKeyword}
