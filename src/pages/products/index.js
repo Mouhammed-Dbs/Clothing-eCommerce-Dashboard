@@ -21,11 +21,17 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Checkbox from "@mui/material/Checkbox";
 import ListItemText from "@mui/material/ListItemText";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 import {
+  deleteProduct,
   getProducts,
   getSubCategories,
 } from "../../../public/functions/product";
-import { Spinner } from "@nextui-org/react";
+import { Spinner } from "@nextui-org/react"; // Import Spinner from NextUI
 
 export default function Products() {
   const router = useRouter();
@@ -38,6 +44,9 @@ export default function Products() {
   const [subCategories, setSubCategories] = useState([]);
   const [selectedSubCategories, setSelectedSubCategories] = useState([]);
   const [numLastResults, setNumLastResult] = useState(-1);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [productToDelete, setProductToDelete] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     const fetchSubCategories = async () => {
@@ -107,8 +116,30 @@ export default function Products() {
   };
 
   const handleDeleteProduct = (index) => {
-    const newProducts = products.filter((_, i) => i !== index);
-    setProducts(newProducts);
+    setProductToDelete(index);
+    setOpenDeleteDialog(true);
+  };
+
+  const confirmDeleteProduct = async () => {
+    setDeleting(true);
+    try {
+      await deleteProduct(productToDelete);
+      const newProducts = products.filter(
+        (product) => product._id !== productToDelete
+      );
+      setProducts(newProducts);
+      setOpenDeleteDialog(false);
+      setProductToDelete(null);
+    } catch (err) {
+      console.error("Failed to delete product:", err);
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  const cancelDeleteProduct = () => {
+    setOpenDeleteDialog(false);
+    setProductToDelete(null);
   };
 
   const handleSubCategoryChange = (event) => {
@@ -123,7 +154,6 @@ export default function Products() {
       setSelectedSubCategories(filteredValue);
     }
   };
-
   return (
     <div style={{ padding: "20px" }}>
       <div
@@ -338,7 +368,7 @@ export default function Products() {
                       <EditIcon />
                     </IconButton>
                     <IconButton
-                      onClick={() => handleDeleteProduct(index)}
+                      onClick={() => handleDeleteProduct(product._id)}
                       sx={{ color: "#b91c1c" }}
                       className="text-red-700"
                     >
@@ -399,6 +429,38 @@ export default function Products() {
           <p>No more products</p>
         </div>
       )}
+
+      {/* Dialog for delete confirmation */}
+      <Dialog
+        open={openDeleteDialog}
+        onClose={cancelDeleteProduct}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Confirm Delete"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete this product?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={cancelDeleteProduct}
+            color="primary"
+            disabled={deleting}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={confirmDeleteProduct}
+            color="secondary"
+            autoFocus
+            disabled={deleting}
+          >
+            {deleting ? <Spinner size="sm" color="primary" /> : "Delete"}{" "}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

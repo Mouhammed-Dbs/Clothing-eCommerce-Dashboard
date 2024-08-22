@@ -8,7 +8,7 @@ exports.getProducts = async (query) => {
     );
     return { error: false, data: res.data };
   } catch (error) {
-    return { error: true, data: error.response?.data };
+    throw error.response?.data;
   }
 };
 
@@ -29,8 +29,8 @@ exports.addProducts = async (data) => {
     if (data.priceAfterDiscount !== undefined) {
       formData.append("priceAfterDiscount", data.priceAfterDiscount);
     }
-    formData.append("colors[]", data.colors);
-    formData.append("sizes[]", data.sizes);
+    formData.append("colors[]", data.selectedColors);
+    formData.append("sizes[]", data.selectedSizes);
     formData.append("subcategories[]", data.subcategories);
 
     const res = await axios.post(
@@ -45,6 +45,20 @@ exports.addProducts = async (data) => {
     );
 
     return { error: false, data: res.data };
+  } catch (error) {
+    throw error.response?.data;
+  }
+};
+
+exports.deleteProduct = async (id) => {
+  try {
+    await axios.delete(`${process.env.BASE_API_URL}/api/v1/products/${id}`, {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return { error: false };
   } catch (error) {
     throw error.response?.data;
   }
