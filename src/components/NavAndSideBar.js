@@ -34,10 +34,10 @@ const NavAndSideBar = (props) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== undefined) {
       const userInfo = JSON.parse(localStorage.getItem("account-info"));
       if (userInfo) {
-        setUser({ name: userInfo.name, role: userInfo.role });
+        setUser(userInfo);
       }
     }
   }, []);
