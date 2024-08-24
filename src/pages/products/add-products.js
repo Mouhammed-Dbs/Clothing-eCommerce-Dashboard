@@ -3,10 +3,8 @@ import { useRouter } from "next/router";
 import { Tooltip, Input, Button, Spacer } from "@nextui-org/react";
 import Select from "react-select";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import {
-  getSubCategories,
-  addProducts,
-} from "../../../public/functions/product";
+import { addProducts } from "../../../public/functions/product";
+import { getSubCategories } from "../../../public/functions/subcategories";
 
 const customStyles = {
   control: (provided) => ({
@@ -64,8 +62,8 @@ export default function AddProductsPage() {
   const [visible, setVisible] = useState(false);
   const [newOption, setNewOption] = useState("");
   const [optionType, setOptionType] = useState("");
-  const [loading, setLoading] = useState(false); // لحالة التحميل
-  const [errorMessage, setErrorMessage] = useState(""); // لرسالة الخطأ
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -105,7 +103,7 @@ export default function AddProductsPage() {
   };
 
   const handleAddProduct = async () => {
-    setErrorMessage(""); // إعادة تعيين رسالة الخطأ
+    setErrorMessage("");
     const {
       title,
       description,
@@ -117,7 +115,6 @@ export default function AddProductsPage() {
       imageCover,
     } = product;
 
-    // تحقق من تعبئة الحقول الأساسية
     if (
       !title ||
       !description ||
@@ -146,7 +143,7 @@ export default function AddProductsPage() {
         error?.message || "Failed to add the product. Please try again."
       );
     } finally {
-      setLoading(false); // إعادة تعيين حالة التحميل إلى false
+      setLoading(false);
     }
   };
 
