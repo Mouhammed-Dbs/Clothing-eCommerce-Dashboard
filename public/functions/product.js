@@ -63,15 +63,3 @@ exports.deleteProduct = async (id) => {
     throw error.response?.data;
   }
 };
-
-exports.getSubCategories = async () => {
-  try {
-    const response = await axios.get(
-      `${process.env.BASE_API_URL}/api/v1/subcategories`,
-      {}
-    );
-    return { error: false, data: response.data };
-  } catch (error) {
-    throw error.response?.data;
-  }
-};
