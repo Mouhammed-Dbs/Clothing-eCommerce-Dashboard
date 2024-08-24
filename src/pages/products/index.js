@@ -26,12 +26,9 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import {
-  deleteProduct,
-  getProducts,
-  getSubCategories,
-} from "../../../public/functions/product";
+import { deleteProduct, getProducts } from "../../../public/functions/product";
 import { Spinner } from "@nextui-org/react"; // Import Spinner from NextUI
+import { getSubCategories } from "../../../public/functions/subcategories";
 
 export default function Products() {
   const router = useRouter();
