@@ -1,33 +1,39 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Button from "@mui/material/Button";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import IconButton from "@mui/material/IconButton";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+import {
+  Button,
+  Grid,
+  Box,
+  IconButton,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  TextField,
+  InputAdornment,
+  Select,
+  MenuItem,
+  Checkbox,
+  ListItemText,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
+import {
+  AddCircle as AddCircleIcon,
+  Edit as EditIcon,
+  Delete as DeleteIcon,
+  Search as SearchIcon,
+} from "@mui/icons-material";
 import Image from "next/image";
 import Link from "next/link";
-import TextField from "@mui/material/TextField";
-import InputAdornment from "@mui/material/InputAdornment";
-import SearchIcon from "@mui/icons-material/Search";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import Checkbox from "@mui/material/Checkbox";
-import ListItemText from "@mui/material/ListItemText";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 import { deleteProduct, getProducts } from "../../../public/functions/product";
-import { Spinner } from "@nextui-org/react"; // Import Spinner from NextUI
+import { Spinner } from "@nextui-org/react";
 import { getSubCategories } from "../../../public/functions/subcategories";
 
 export default function Products() {
@@ -151,149 +157,148 @@ export default function Products() {
       setSelectedSubCategories(filteredValue);
     }
   };
+
   return (
-    <div style={{ padding: "20px" }}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "20px",
-          gap: "10px",
-        }}
+    <Box sx={{ padding: "20px" }}>
+      <Grid
+        container
+        spacing={2}
+        alignItems="center"
+        sx={{ marginBottom: "20px" }}
       >
-        <Link href={"/products/add-products"} passHref legacyBehavior>
-          <Button
-            href="/products/add-products"
-            variant="contained"
-            startIcon={<AddCircleIcon className="text-white" />}
+        <Grid item xs={12} sm={6} md={3}>
+          <TextField
+            placeholder="Search products"
+            value={searchKeyword}
+            onChange={(e) => setSearchKeyword(e.target.value)}
+            onKeyPress={(e) => {
+              if (e.key === "Enter") fetchProducts(1, true);
+            }}
+            variant="outlined"
+            size="small"
+            fullWidth
             sx={{
-              height: "38px",
-              border: "1px solid #fb923c",
-              backgroundColor: "orange",
-              color: "#fff",
-              "&:hover": { backgroundColor: "#ea580c" },
-              textTransform: "none",
-              fontSize: "16px",
+              backgroundColor: "#ffffff",
+              borderRadius: "5px",
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  borderColor: "#fb923c",
+                },
+                "&:hover fieldset": {
+                  borderColor: "#ea580c",
+                },
+              },
+            }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => fetchProducts(1, true)}
+                    sx={{ color: "#fb923c" }}
+                  >
+                    <SearchIcon />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Select
+            value={sortOption}
+            onChange={(e) => setSortOption(e.target.value)}
+            variant="outlined"
+            size="small"
+            displayEmpty
+            fullWidth
+            sx={{
+              backgroundColor: "#ffffff",
+              borderRadius: "5px",
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  borderColor: "#fb923c",
+                },
+                "&:hover fieldset": {
+                  borderColor: "#ea580c",
+                },
+              },
             }}
           >
-            Add
-          </Button>
-        </Link>
-        <TextField
-          placeholder="Search products"
-          value={searchKeyword}
-          onChange={(e) => setSearchKeyword(e.target.value)}
-          onKeyPress={(e) => {
-            if (e.key === "Enter") fetchProducts(1, true);
-          }}
-          variant="outlined"
-          size="small"
-          sx={{
-            flex: 1,
-            backgroundColor: "#ffffff",
-            borderRadius: "5px",
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": {
-                borderColor: "#fb923c",
+            <MenuItem value="">Sort by</MenuItem>
+            <MenuItem value="price">Lower price</MenuItem>
+            <MenuItem value="-price">Higher price</MenuItem>
+            <MenuItem value="createdAt">Oldest</MenuItem>
+            <MenuItem value="-createdAt">Newest</MenuItem>
+          </Select>
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Select
+            multiple
+            value={selectedSubCategories}
+            onChange={handleSubCategoryChange}
+            variant="outlined"
+            size="small"
+            displayEmpty
+            fullWidth
+            sx={{
+              backgroundColor: "#ffffff",
+              borderRadius: "5px",
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  borderColor: "#fb923c",
+                },
+                "&:hover fieldset": {
+                  borderColor: "#ea580c",
+                },
               },
-              "&:hover fieldset": {
-                borderColor: "#ea580c",
-              },
-            },
-          }}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  onClick={() => fetchProducts(1, true)}
-                  sx={{ color: "#fb923c" }}
-                >
-                  <SearchIcon />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-
-        <Select
-          value={sortOption}
-          onChange={(e) => setSortOption(e.target.value)}
-          variant="outlined"
-          size="small"
-          displayEmpty
-          sx={{
-            minWidth: "150px",
-            backgroundColor: "#ffffff",
-            borderRadius: "5px",
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": {
-                borderColor: "#fb923c",
-              },
-              "&:hover fieldset": {
-                borderColor: "#ea580c",
-              },
-            },
-          }}
-        >
-          <MenuItem value="">Sort by</MenuItem>
-          <MenuItem value="price">Lower price</MenuItem>
-          <MenuItem value="-price">Higher price</MenuItem>
-          <MenuItem value="createdAt">Oldest</MenuItem>
-          <MenuItem value="-createdAt">Newest</MenuItem>
-        </Select>
-
-        <Select
-          multiple
-          value={selectedSubCategories}
-          onChange={handleSubCategoryChange}
-          variant="outlined"
-          size="small"
-          displayEmpty
-          sx={{
-            minWidth: "200px",
-            backgroundColor: "#ffffff",
-            borderRadius: "5px",
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": {
-                borderColor: "#fb923c",
-              },
-              "&:hover fieldset": {
-                borderColor: "#ea580c",
-              },
-            },
-          }}
-          renderValue={(selected) =>
-            selected.length === 0 ||
-            subCategories.filter((category) => category._id !== "all").length ==
-              selected.length
-              ? "All Categories"
-              : selected
-                  .map((id) => {
-                    const subCategory = subCategories.find(
-                      (sub) => sub._id === id
-                    );
-                    return subCategory ? subCategory.name : "";
-                  })
-                  .join(", ")
-          }
-        >
-          {subCategories.map((subCategory) => (
-            <MenuItem key={subCategory._id} value={subCategory._id}>
-              <Checkbox
-                checked={
-                  subCategory._id != "all"
-                    ? selectedSubCategories.includes(subCategory._id)
-                    : selectedSubCategories.length === 0 ||
-                      subCategories.filter((category) => category._id !== "all")
-                        .length == selectedSubCategories.length
-                }
-              />
-              <ListItemText primary={subCategory.name} />
-            </MenuItem>
-          ))}
-        </Select>
-      </div>
+            }}
+            renderValue={(selected) =>
+              selected.length === 0 ||
+              subCategories.filter((category) => category._id !== "all")
+                .length == selected.length
+                ? "All Categories"
+                : selected
+                    .map((id) => {
+                      const category = subCategories.find(
+                        (category) => category._id === id
+                      );
+                      return category ? category.name : "";
+                    })
+                    .join(", ")
+            }
+          >
+            {subCategories.map((category) => (
+              <MenuItem key={category._id} value={category._id}>
+                <Checkbox
+                  checked={selectedSubCategories.includes(category._id)}
+                />
+                <ListItemText primary={category.name} />
+              </MenuItem>
+            ))}
+          </Select>
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Link href={"/products/add-products"} passHref legacyBehavior>
+            <Button
+              href="/products/add-products"
+              variant="contained"
+              startIcon={<AddCircleIcon className="text-white" />}
+              sx={{
+                width: "100%",
+                height: "38px",
+                border: "1px solid #fb923c",
+                backgroundColor: "orange",
+                color: "#fff",
+                "&:hover": { backgroundColor: "#ea580c" },
+                textTransform: "none",
+                fontSize: "16px",
+              }}
+            >
+              Add
+            </Button>
+          </Link>
+        </Grid>
+      </Grid>
 
       {products.length > 0 && (
         <TableContainer
@@ -391,73 +396,55 @@ export default function Products() {
         </div>
       )}
 
-      {hasMore && !loading && numLastResults != 0 && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "20px",
-          }}
+      {hasMore && !loading && (
+        <Box
+          sx={{ display: "flex", justifyContent: "center", marginTop: "20px" }}
         >
-          <Button
-            variant="contained"
-            onClick={() => fetchProducts(currentPage + 1)}
-            sx={{
-              border: "1px solid #fb923c",
-              backgroundColor: "orange",
-              color: "#fff",
-              "&:hover": { backgroundColor: "#ea580c" },
-              textTransform: "none",
-              fontSize: "16px",
-            }}
-          >
-            Load More
-          </Button>
-        </div>
-      )}
-      {numLastResults == 0 && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "20px",
-          }}
-        >
-          <p>No more products</p>
-        </div>
+          {numLastResults == 0 ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "20px",
+              }}
+            >
+              <p>No more products</p>
+            </div>
+          ) : (
+            <Button
+              onClick={() => fetchProducts(currentPage + 1)}
+              variant="contained"
+              sx={{
+                backgroundColor: "#fb923c",
+                "&:hover": { backgroundColor: "#ea580c" },
+              }}
+            >
+              Load More
+            </Button>
+          )}
+        </Box>
       )}
 
-      {/* Dialog for delete confirmation */}
-      <Dialog
-        open={openDeleteDialog}
-        onClose={cancelDeleteProduct}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{"Confirm Delete"}</DialogTitle>
+      <Dialog open={openDeleteDialog} onClose={cancelDeleteProduct}>
+        <DialogTitle>Delete Product</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
+          <DialogContentText>
             Are you sure you want to delete this product?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button
-            onClick={cancelDeleteProduct}
-            color="primary"
-            disabled={deleting}
-          >
+          <Button onClick={cancelDeleteProduct} color="primary">
             Cancel
           </Button>
           <Button
             onClick={confirmDeleteProduct}
             color="secondary"
-            autoFocus
             disabled={deleting}
           >
-            {deleting ? <Spinner size="sm" color="primary" /> : "Delete"}{" "}
+            {deleting ? "Deleting..." : "Delete"}
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </Box>
   );
 }
