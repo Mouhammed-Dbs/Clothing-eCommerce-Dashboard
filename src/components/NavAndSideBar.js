@@ -16,6 +16,7 @@ import {
   Avatar,
   Button,
 } from "@mui/material";
+import { MdDashboard , MdShoppingCart ,MdFormatListBulleted} from "react-icons/md";
 import {
   Menu as MenuIcon,
   Dashboard as DashboardIcon,
@@ -60,17 +61,17 @@ const NavAndSideBar = (props) => {
   const drawerItems = [
     {
       text: "Dashboard",
-      icon: <DashboardIcon className="text-orange-600" />,
+      icon: <MdDashboard className="text-orange-600 text-3xl" />,
       href: "/",
     },
     {
       text: "Products",
-      icon: <ShoppingCartIcon className="text-orange-600" />,
+      icon: <MdShoppingCart className="text-orange-600 text-3xl" />,
       href: "/products",
     },
     {
       text: "Categories",
-      icon: <CategoriesIcon className="text-orange-600" />,
+      icon: <MdFormatListBulleted className="text-orange-600 text-3xl" />,
       href: "/categories",
     },
   ];
