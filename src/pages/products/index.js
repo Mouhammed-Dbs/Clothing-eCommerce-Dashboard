@@ -35,6 +35,7 @@ import Link from "next/link";
 import { deleteProduct, getProducts } from "../../../public/functions/product";
 import { Spinner } from "@nextui-org/react";
 import { getSubCategories } from "../../../public/functions/subcategories";
+import { button as NextUIButton } from "@nextui-org/react";
 
 export default function Products() {
   const router = useRouter();
@@ -433,16 +434,16 @@ export default function Products() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={cancelDeleteProduct} color="primary">
+          <NextUIButton onClick={cancelDeleteProduct} color="none">
             Cancel
-          </Button>
-          <Button
+          </NextUIButton>
+          <NextUIButton
             onClick={confirmDeleteProduct}
-            color="secondary"
+            color="primary"
             disabled={deleting}
           >
             {deleting ? "Deleting..." : "Delete"}
-          </Button>
+          </NextUIButton>
         </DialogActions>
       </Dialog>
     </Box>
