@@ -35,7 +35,9 @@ import Link from "next/link";
 import { deleteProduct, getProducts } from "../../../public/functions/product";
 import { Spinner } from "@nextui-org/react";
 import { getSubCategories } from "../../../public/functions/subcategories";
-import { button as NextUIButton } from "@nextui-org/react";
+import { Button as NextUIButton } from "@nextui-org/react";
+import Carousel from "react-material-ui-carousel";
+import { MdClose } from "react-icons/md";
 
 export default function Products() {
   const router = useRouter();
@@ -51,6 +53,8 @@ export default function Products() {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
   const [deleting, setDeleting] = useState(false);
+  const [selectedProductImages, setSelectedProductImages] = useState([]);
+  const [openImageSlider, setOpenImageSlider] = useState(false);
 
   useEffect(() => {
     const fetchSubCategories = async () => {
@@ -157,6 +161,17 @@ export default function Products() {
     } else {
       setSelectedSubCategories(filteredValue);
     }
+  };
+
+  const handleImageClick = (product) => {
+    const images = [product.imageCover, ...product.images];
+    setSelectedProductImages(images);
+    setOpenImageSlider(true);
+  };
+
+  const closeImageSlider = () => {
+    setOpenImageSlider(false);
+    setSelectedProductImages([]);
   };
 
   return (
@@ -358,9 +373,11 @@ export default function Products() {
                         borderRadius: "5px",
                         maxHeight: "60px",
                         minHeight: "60px",
+                        cursor: "pointer",
                       }}
                       width={50}
                       height={50}
+                      onClick={() => handleImageClick(product)}
                     />
                   </TableCell>
                   <TableCell>
@@ -443,6 +460,80 @@ export default function Products() {
             disabled={deleting}
           >
             {deleting ? "Deleting..." : "Delete"}
+          </NextUIButton>
+        </DialogActions>
+      </Dialog>
+      {/* Image Slider Dialog */}
+      <Dialog
+        PaperProps={{
+          style: {
+            outline: "3px solid #fb923c",
+          },
+        }}
+        open={openImageSlider}
+        onClose={closeImageSlider}
+        aria-labelledby="image-slider-title"
+        aria-describedby="image-slider-description"
+        maxWidth="xs"
+        fullWidth
+      >
+        <DialogTitle
+          id="image-slider-title"
+          sx={{
+            color: "orange",
+            textAlign: "center",
+            fontSize: "25px",
+            fontWeight: "bold",
+          }}
+        >
+          {"Product Images"}
+        </DialogTitle>
+        <DialogContent sx={{padding : "10px"}}>
+          <Carousel
+            navButtonsProps={{
+              style: {
+                color: "#ea580c",
+                width: "40px",
+                height: "40px",
+                backgroundColor: "orange",
+              },
+            }}
+            navButtonsAlwaysVisible
+            autoPlay={false}
+            fullHeightHover={false}
+            activeIndicatorIconButtonProps={{
+              style: {
+                color: "orange",
+              },
+            }}
+            navButtonsWrapperProps={{
+              style: {
+                top: "calc(50% - 20px)",
+                height: "40px",
+                marginInline: "-5px",
+              },
+            }}
+          >
+            {selectedProductImages.map((image, index) => (
+              <Image
+                key={index}
+                src={image}
+                alt={`Product Image ${index + 1}`}
+                style={{
+                  borderRadius: "5px",
+                  width: "100%",
+                  height: "450px",
+                  objectFit: "contain",
+                }}
+                width={800}
+                height={450}
+              />
+            ))}
+          </Carousel>
+        </DialogContent>
+        <DialogActions>
+          <NextUIButton onClick={closeImageSlider} color="primary" auto>
+            Close
           </NextUIButton>
         </DialogActions>
       </Dialog>
