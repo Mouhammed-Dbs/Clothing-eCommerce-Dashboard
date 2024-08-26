@@ -6,6 +6,7 @@ import {
   resetPassword,
 } from "../../public/functions/auth";
 import { useRouter } from "next/router";
+import CodeInput from "@/components/utils/CodeInput";
 
 export default function ForgetPassword() {
   const router = useRouter();
@@ -151,14 +152,7 @@ export default function ForgetPassword() {
 
         {step === 2 && (
           <form onSubmit={handleCodeSubmit} className="flex flex-col">
-            <input
-              type="text"
-              placeholder="Enter 6-digit Code"
-              value={resetCode}
-              onChange={(e) => setResetCode(e.target.value)}
-              className="border-2 border-gray-300 p-3 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-orange-500"
-              required
-            />
+            <CodeInput onCodeChange={setResetCode} />
             <button
               type="submit"
               className={`bg-orange-500 text-white py-3 rounded-lg transition-colors duration-300 ${
