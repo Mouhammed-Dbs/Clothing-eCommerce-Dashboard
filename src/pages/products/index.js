@@ -477,6 +477,7 @@ export default function Products() {
         maxWidth="xs"
         fullWidth
       >
+        <div style={{display : "flex", justifyContent : "center", alignItems : "center"}}>
         <DialogTitle
           id="image-slider-title"
           sx={{
@@ -484,10 +485,17 @@ export default function Products() {
             textAlign: "center",
             fontSize: "25px",
             fontWeight: "bold",
+            padding: "5px 0px 5px 45px",
+            flexGrow: 1,
           }}
         >
           {"Product Images"}
         </DialogTitle>
+        <DialogActions>
+          <NextUIButton onClick={closeImageSlider} color="primary" auto size="sm" isIconOnly startContent={<MdClose size={20}/>}>
+          </NextUIButton>
+        </DialogActions>
+        </div>
         <DialogContent sx={{padding : "10px"}}>
           <Carousel
             navButtonsProps={{
@@ -522,20 +530,16 @@ export default function Products() {
                 style={{
                   borderRadius: "5px",
                   width: "100%",
-                  height: "450px",
+                  height: "350px",
                   objectFit: "contain",
                 }}
                 width={800}
-                height={450}
+                height={350}
               />
             ))}
           </Carousel>
         </DialogContent>
-        <DialogActions>
-          <NextUIButton onClick={closeImageSlider} color="primary" auto>
-            Close
-          </NextUIButton>
-        </DialogActions>
+
       </Dialog>
     </Box>
   );
