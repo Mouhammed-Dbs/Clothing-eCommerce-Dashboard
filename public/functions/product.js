@@ -29,10 +29,22 @@ exports.addProducts = async (data) => {
     if (data.priceAfterDiscount !== undefined) {
       formData.append("priceAfterDiscount", data.priceAfterDiscount);
     }
-    formData.append("colors[]", data.selectedColors);
-    formData.append("sizes[]", data.selectedSizes);
-    formData.append("subcategories[]", data.subcategories);
+    if (data.selectedColors && data.selectedColors.length > 0) {
+      data.selectedColors.forEach((color) =>
+        formData.append("colors[]", color)
+      );
+    }
 
+    if (data.selectedSizes && data.selectedSizes.length > 0) {
+      data.selectedSizes.forEach((size) => formData.append("sizes[]", size));
+    }
+
+    if (data.subcategories && data.subcategories.length > 0) {
+      data.subcategories.forEach((subcategory) =>
+        formData.append("subcategories[]", subcategory)
+      );
+    }
+    console.log(data.selectedSizes);
     const res = await axios.post(
       `${process.env.BASE_API_URL}/api/v1/products`,
       formData,
