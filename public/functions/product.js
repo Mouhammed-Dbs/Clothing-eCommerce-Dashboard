@@ -75,3 +75,25 @@ exports.deleteProduct = async (id) => {
     throw error.response?.data;
   }
 };
+
+exports.getProduct = async (id) => {
+  try {
+    const res = await axios.get(`${process.env.BASE_API_URL}/api/v1/products/${id}`);
+    console.log(res.data);
+    return { error: false, data: res.data };
+  } catch (error) {
+    throw error.response?.data;
+  }
+};
+exports.updateProduct = async (id, data) => {
+  try {
+    const res = await axios.put(`${process.env.BASE_API_URL}/api/v1/products/${id}`, data, {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+      },
+    });
+    return { error: false, data: res.data };
+  } catch (error) {
+    throw error.response?.data;
+  }
+};
