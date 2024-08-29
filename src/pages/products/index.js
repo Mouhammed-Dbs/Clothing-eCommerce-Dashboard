@@ -119,8 +119,8 @@ export default function Products() {
     setLoading(false);
   };
 
-  const handleEditProduct = (index) => {
-    router.push(`/products/add-products?edit=${index}`);
+  const handleEditProduct = (id) => {
+    router.push(`/products/edit-product?id=${id}`);
   };
 
   const handleDeleteProduct = (index) => {
@@ -382,7 +382,7 @@ export default function Products() {
                   </TableCell>
                   <TableCell>
                     <IconButton
-                      onClick={() => handleEditProduct(index)}
+                      onClick={() => handleEditProduct(product._id)}
                       sx={{ color: "#fb923c" }}
                     >
                       <EditIcon />
