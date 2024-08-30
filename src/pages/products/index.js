@@ -331,6 +331,9 @@ export default function Products() {
                   Description
                 </TableCell>
                 <TableCell sx={{ fontWeight: "bold", color: "#c2410c" }}>
+                  Quantity
+                </TableCell>
+                <TableCell sx={{ fontWeight: "bold", color: "#c2410c" }}>
                   Price
                 </TableCell>
                 <TableCell sx={{ fontWeight: "bold", color: "#c2410c" }}>
@@ -355,6 +358,7 @@ export default function Products() {
                 <TableRow key={index}>
                   <TableCell>{product.title}</TableCell>
                   <TableCell>{product.description}</TableCell>
+                  <TableCell>{product.quantity}</TableCell>
                   <TableCell>{product.price}</TableCell>
                   <TableCell>{product.sizes.join(", ")}</TableCell>
                   <TableCell className="flex justify-center items-center">
@@ -477,26 +481,38 @@ export default function Products() {
         maxWidth="xs"
         fullWidth
       >
-        <div style={{display : "flex", justifyContent : "center", alignItems : "center"}}>
-        <DialogTitle
-          id="image-slider-title"
-          sx={{
-            color: "orange",
-            textAlign: "center",
-            fontSize: "25px",
-            fontWeight: "bold",
-            padding: "5px 0px 5px 45px",
-            flexGrow: 1,
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
-          {"Product Images"}
-        </DialogTitle>
-        <DialogActions>
-          <NextUIButton onClick={closeImageSlider} color="primary" auto size="sm" isIconOnly startContent={<MdClose size={20}/>}>
-          </NextUIButton>
-        </DialogActions>
+          <DialogTitle
+            id="image-slider-title"
+            sx={{
+              color: "orange",
+              textAlign: "center",
+              fontSize: "25px",
+              fontWeight: "bold",
+              padding: "5px 0px 5px 45px",
+              flexGrow: 1,
+            }}
+          >
+            {"Product Images"}
+          </DialogTitle>
+          <DialogActions>
+            <NextUIButton
+              onClick={closeImageSlider}
+              color="primary"
+              auto
+              size="sm"
+              isIconOnly
+              startContent={<MdClose size={20} />}
+            ></NextUIButton>
+          </DialogActions>
         </div>
-        <DialogContent sx={{padding : "10px"}}>
+        <DialogContent sx={{ padding: "10px" }}>
           <Carousel
             navButtonsProps={{
               style: {
@@ -539,7 +555,6 @@ export default function Products() {
             ))}
           </Carousel>
         </DialogContent>
-
       </Dialog>
     </Box>
   );
