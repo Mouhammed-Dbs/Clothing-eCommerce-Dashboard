@@ -178,13 +178,13 @@ export default function AddProductsPage() {
             {/* Categories Input */}
             <div>
               <label className="text-lg font-semibold text-orange-500 mb-2 inline-block">
-                Subcategories *
+                Categories *
               </label>
               <div className="flex flex-row gap-5 items-center">
                 <Select
                   isMulti
                   name="subcategories"
-                  placeholder="Select subcategories"
+                  placeholder="Select categories"
                   value={product.subcategories.map((id) => {
                     const subCategory = subCategories.find(
                       (sub) => sub._id === id

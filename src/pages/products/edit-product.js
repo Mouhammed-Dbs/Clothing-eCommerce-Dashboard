@@ -3,12 +3,7 @@ import { useEffect, useState } from "react";
 import { getProduct, updateProduct } from "../../../public/functions/product";
 import { getSubCategories } from "../../../public/functions/subcategories";
 import Image from "next/image";
-import {
-  Tooltip,
-  Input,
-  Button,
-  Modal,
-} from "@nextui-org/react";
+import { Tooltip, Input, Button, Modal } from "@nextui-org/react";
 import Select from "react-select";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { MdClose } from "react-icons/md";
@@ -179,7 +174,10 @@ const EditProduct = () => {
     }));
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "coverImage" ? newImages[0].url : [...prev[name], ...newImages],
+      [name]:
+        name === "coverImage"
+          ? newImages[0].url
+          : [...prev[name], ...newImages],
     }));
   };
 
@@ -201,15 +199,18 @@ const EditProduct = () => {
     }));
   };
 
-  if (loading) return <div
-  style={{
-    display: "flex",
-    justifyContent: "center",
-    marginTop: "30%",
-  }}
->
-  <Spinner color="primary" />
-</div>
+  if (loading)
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginTop: "30%",
+        }}
+      >
+        <Spinner color="primary" />
+      </div>
+    );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-200 via-orange-300 to-orange-400 p-6">
@@ -219,17 +220,20 @@ const EditProduct = () => {
         </h1>
         <form className="flex flex-col gap-2 mb-6" onSubmit={handleSubmit}>
           <label className="text-lg font-semibold text-orange-500 inline-block">
-            Subcategories *
+            Categories *
           </label>
           <Select
             isMulti
             name="subCategory"
-            placeholder="Select subcategory"
+            placeholder="Select category"
             value={formData.subCategory?.map((subCategoryId) => {
               const subCategory = subCategories.find(
                 (sub) => sub._id === subCategoryId
               );
-              return { value: subCategoryId, label: subCategory?.name || subCategoryId };
+              return {
+                value: subCategoryId,
+                label: subCategory?.name || subCategoryId,
+              };
             })}
             onChange={(selectedOptions) =>
               handleSelectChange("subCategory", selectedOptions)
