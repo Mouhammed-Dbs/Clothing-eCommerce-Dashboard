@@ -16,7 +16,12 @@ import {
   Avatar,
   Button,
 } from "@mui/material";
-import { MdDashboard , MdShoppingCart ,MdFormatListBulleted} from "react-icons/md";
+import {
+  MdDashboard,
+  MdShoppingCart,
+  MdFormatListBulleted,
+  MdListAlt,
+} from "react-icons/md";
 import {
   Menu as MenuIcon,
   Dashboard as DashboardIcon,
@@ -73,6 +78,11 @@ const NavAndSideBar = (props) => {
       text: "Categories",
       icon: <MdFormatListBulleted className="text-orange-600 text-3xl" />,
       href: "/categories",
+    },
+    {
+      text: "Orders",
+      icon: <MdListAlt className="text-orange-600 text-3xl" />, // Icon for Orders
+      href: "/orders",
     },
   ];
 
