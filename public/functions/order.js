@@ -1,12 +1,12 @@
 import axios from "axios";
 import { getToken } from "./helpers";
 
-export const getUserOrders = async () => {
+export const getUserOrders = async (page) => {
   let token = getToken();
   if (token) {
     try {
       const response = await axios.get(
-        `${process.env.BASE_API_URL}/api/v1//orders`,
+        `${process.env.BASE_API_URL}/api/v1/orders?limit=15&page=${page}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
