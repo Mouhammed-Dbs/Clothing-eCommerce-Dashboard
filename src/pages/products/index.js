@@ -30,10 +30,9 @@ import {
   Delete as DeleteIcon,
   Search as SearchIcon,
 } from "@mui/icons-material";
-import Image from "next/image";
 import Link from "next/link";
 import { deleteProduct, getProducts } from "../../../public/functions/product";
-import { Spinner } from "@nextui-org/react";
+import { Image, Spinner } from "@nextui-org/react";
 import { getSubCategories } from "../../../public/functions/subcategories";
 import { Button as NextUIButton } from "@nextui-org/react";
 import Carousel from "react-material-ui-carousel";
