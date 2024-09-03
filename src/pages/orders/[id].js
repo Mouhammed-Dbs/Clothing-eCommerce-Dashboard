@@ -113,10 +113,10 @@ export default function OrderDetailPage() {
               Payment Method: {order.paymentMethodType}
             </Typography>
             <Typography variant="h6" sx={{ color: "#6b7280" }}>
-              Is Paid: {order.isPaid ? "Yes" : "No"}
+              Paid: {order.isPaid ? "Yes" : "No"}
             </Typography>
             <Typography variant="h6" sx={{ color: "#6b7280" }}>
-              Is Delivered: {order.isDelivered ? "Yes" : "No"}
+              Delivered: {order.isDelivered ? "Yes" : "No"}
             </Typography>
 
             <Box marginTop={2}>

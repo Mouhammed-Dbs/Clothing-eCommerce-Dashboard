@@ -97,10 +97,10 @@ export default function OrdersPage() {
                     Payment Method
                   </TableCell>
                   <TableCell sx={{ fontWeight: "bold", color: "#c2410c" }}>
-                    Is Paid
+                    Paid
                   </TableCell>
                   <TableCell sx={{ fontWeight: "bold", color: "#c2410c" }}>
-                    Is Delivered
+                    Delivered
                   </TableCell>
                 </TableRow>
               </TableHead>
