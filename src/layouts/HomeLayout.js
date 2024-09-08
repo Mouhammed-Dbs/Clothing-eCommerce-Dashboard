@@ -4,6 +4,7 @@ import { FaExclamationTriangle } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { isLogin } from "../../public/functions/auth";
 import { useRouter } from "next/router";
+import { logoutUser } from "../../public/functions/helpers";
 
 export default function HomeLayout({ children }) {
   const router = useRouter();
@@ -20,6 +21,7 @@ export default function HomeLayout({ children }) {
           setPageLoading(false);
         }
       } catch (err) {
+        if (err.response.status === 401) logoutUser();
         setError(
           "There was an error connecting to the server. Please try again later."
         );
