@@ -96,8 +96,8 @@ const EditProduct = () => {
               title: productData.title || "",
               description: productData.description || "",
               price: productData.price || "",
-              subCategory: productData.subCategories
-                ? productData.subCategories.map((sub) => sub._id)
+              subCategory: productData.subcategories
+                ? productData.subcategories.map((sub) => sub._id)
                 : [],
               color: productData.colors || [],
               size: productData.sizes || [],
@@ -220,12 +220,12 @@ const EditProduct = () => {
         </h1>
         <form className="flex flex-col gap-2 mb-6" onSubmit={handleSubmit}>
           <label className="text-lg font-semibold text-orange-500 inline-block">
-            Categories *
+            Subcategories *
           </label>
           <Select
             isMulti
             name="subCategory"
-            placeholder="Select category"
+            placeholder="Select subcategory"
             value={formData.subCategory?.map((subCategoryId) => {
               const subCategory = subCategories.find(
                 (sub) => sub._id === subCategoryId
@@ -494,13 +494,11 @@ const EditProduct = () => {
 
       {/* Add New Option Modal */}
       {visible && (
-        <Modal open={visible} onClose={closeHandler}>
-          <Modal.Header>
-            <h2 className="text-xl font-bold">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h2 className="text-xl font-bold mb-4">
               Add New {optionType === "sizes" ? "Size" : "Color"}
             </h2>
-          </Modal.Header>
-          <Modal.Body>
             <Input
               variant="bordered"
               size="lg"
@@ -520,16 +518,16 @@ const EditProduct = () => {
               onChange={(e) => setNewOption(e.target.value)}
               radius="sm"
             />
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={addNewOption} color="primary" auto>
-              Add
-            </Button>
-            <Button onClick={closeHandler} color="error" auto>
-              Cancel
-            </Button>
-          </Modal.Footer>
-        </Modal>
+            <div className="mt-4 flex gap-4">
+              <Button onClick={addNewOption} color="primary" auto>
+                Add
+              </Button>
+              <Button onClick={closeHandler} color="error" auto>
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
