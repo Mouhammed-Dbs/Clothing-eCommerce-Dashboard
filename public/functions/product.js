@@ -78,7 +78,9 @@ exports.deleteProduct = async (id) => {
 
 exports.getProduct = async (id) => {
   try {
-    const res = await axios.get(`${process.env.BASE_API_URL}/api/v1/products/${id}`);
+    const res = await axios.get(
+      `${process.env.BASE_API_URL}/api/v1/products/${id}`
+    );
     console.log(res.data);
     return { error: false, data: res.data };
   } catch (error) {
@@ -87,11 +89,50 @@ exports.getProduct = async (id) => {
 };
 exports.updateProduct = async (id, data) => {
   try {
-    const res = await axios.put(`${process.env.BASE_API_URL}/api/v1/products/${id}`, data, {
-      headers: {
-        Authorization: `Bearer ${getToken()}`,
-      },
-    });
+    const formData = new FormData();
+
+    if (data.imageCover) {
+      formData.append("imageCover", data.imageCover);
+    }
+    if (data.images && data.images.length > 0) {
+      data.images.forEach((image) => formData.append("images", image));
+    }
+    formData.append("title", data.title);
+    formData.append("category", data.category);
+    formData.append("description", data.description);
+    formData.append("price", data.price);
+    formData.append("quantity", data.quantity);
+
+    if (data.priceAfterDiscount !== undefined) {
+      formData.append("priceAfterDiscount", data.priceAfterDiscount);
+    }
+    if (data.selectedColors && data.selectedColors.length > 0) {
+      data.selectedColors.forEach((color) =>
+        formData.append("colors[]", color)
+      );
+    }
+
+    if (data.selectedSizes && data.selectedSizes.length > 0) {
+      data.selectedSizes.forEach((size) => formData.append("sizes[]", size));
+    }
+
+    if (data.subcategories && data.subcategories.length > 0) {
+      data.subcategories.forEach((subcategory) =>
+        formData.append("subcategories[]", subcategory)
+      );
+    }
+
+    const res = await axios.put(
+      `${process.env.BASE_API_URL}/api/v1/products/${id}`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
     return { error: false, data: res.data };
   } catch (error) {
     throw error.response?.data;
