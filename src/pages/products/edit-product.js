@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { getProduct, updateProduct } from "../../../public/functions/product";
 import { getSubCategories } from "../../../public/functions/subcategories";
 import Image from "next/image";
-import { Tooltip, Input, Button, Modal } from "@nextui-org/react";
+import { Tooltip, Input, Button } from "@nextui-org/react";
 import Select from "react-select";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { MdClose } from "react-icons/md";
@@ -46,17 +46,14 @@ const customStyles = {
 };
 
 const EditProduct = () => {
-  const [selectedSizes, setSelectedSizes] = useState([]);
-  const [selectedColors, setSelectedColors] = useState([]);
-  const [selectedSubCategories, setSelectedSubCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
   const [visible, setVisible] = useState(false);
   const [newOption, setNewOption] = useState("");
   const [optionType, setOptionType] = useState("");
   const router = useRouter();
   const { id } = router.query;
-  const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [updateLoading, setUpdateLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -70,6 +67,12 @@ const EditProduct = () => {
     color: [],
     size: [],
   });
+
+  const downloadFile = async (url) => {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    return new File([blob], url.split("/").pop(), { type: blob.type });
+  };
 
   useEffect(() => {
     const fetchSubCategories = async () => {
@@ -91,7 +94,28 @@ const EditProduct = () => {
           const res = await getProduct(id);
           if (!res.error) {
             const productData = { ...res.data.data };
-            setProduct(productData);
+            const formattedImagesPromises = productData.images?.map((imgUrl) =>
+              downloadFile(imgUrl).then((file) => ({
+                file,
+                url: imgUrl,
+              }))
+            );
+
+            const formattedCoverImagePromise = productData.imageCover
+              ? downloadFile(productData.imageCover).then((file) => ({
+                  file,
+                  url: productData.imageCover,
+                }))
+              : Promise.resolve({
+                  file: null,
+                  url: productData.imageCover || "",
+                });
+
+            const [formattedImages, formattedCoverImage] = await Promise.all([
+              Promise.all(formattedImagesPromises || []),
+              formattedCoverImagePromise,
+            ]);
+
             setFormData({
               title: productData.title || "",
               description: productData.description || "",
@@ -102,8 +126,8 @@ const EditProduct = () => {
               color: productData.colors || [],
               size: productData.sizes || [],
               quantity: productData.quantity || "",
-              images: productData.images || [],
-              coverImage: productData.imageCover || "",
+              images: formattedImages || [],
+              coverImage: formattedCoverImage,
               colors: ["white", "black", "red", "blue", "green", "yellow"],
               sizes: ["small", "medium", "large", "xl", "xxl"],
             });
@@ -134,8 +158,32 @@ const EditProduct = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Prepare the data object to send
+    const formDataToSend = {
+      title: formData.title,
+      description: formData.description,
+      price: formData.price,
+      quantity: formData.quantity,
+      selectedColors: formData.color || [],
+      selectedSizes: formData.size || [],
+      subcategories: formData.subCategory || [],
+    };
+
+    if (formData.coverImage?.file) {
+      formDataToSend.imageCover = formData.coverImage.file;
+    }
+
+    if (formData.images && formData.images.length > 0) {
+      formDataToSend.images = formData.images
+        .map((image) => image.file)
+        .filter((file) => file);
+    }
+
     try {
-      const res = await updateProduct(id, formData);
+      setUpdateLoading(true);
+      const res = await updateProduct(id, formDataToSend);
+      setUpdateLoading(false);
       if (!res.error) {
         router.push("/products");
       } else {
@@ -172,12 +220,11 @@ const EditProduct = () => {
       file,
       url: URL.createObjectURL(file),
     }));
+
     setFormData((prev) => ({
       ...prev,
       [name]:
-        name === "coverImage"
-          ? newImages[0].url
-          : [...prev[name], ...newImages],
+        name === "coverImage" ? newImages[0] : [...prev[name], ...newImages],
     }));
   };
 
@@ -220,12 +267,12 @@ const EditProduct = () => {
         </h1>
         <form className="flex flex-col gap-2 mb-6" onSubmit={handleSubmit}>
           <label className="text-lg font-semibold text-orange-500 inline-block">
-            Subcategories *
+            Categories *
           </label>
           <Select
             isMulti
             name="subCategory"
-            placeholder="Select subcategory"
+            placeholder="Select Category"
             value={formData.subCategory?.map((subCategoryId) => {
               const subCategory = subCategories.find(
                 (sub) => sub._id === subCategoryId
@@ -409,9 +456,9 @@ const EditProduct = () => {
             Cover Image *
           </label>
           {formData.coverImage && (
-            <div className="w-fit relative mb-2">
+            <div className="relative mb-2">
               <Image
-                src={formData.coverImage}
+                src={formData.coverImage.url}
                 alt="Cover"
                 width={100}
                 height={100}
@@ -453,7 +500,7 @@ const EditProduct = () => {
                 <Image
                   width={100}
                   height={100}
-                  src={image}
+                  src={image.url}
                   alt={`Product ${index}`}
                   className="w-24 h-24 object-cover"
                 />
@@ -486,8 +533,8 @@ const EditProduct = () => {
             radius="sm"
           />
 
-          <Button type="submit" color="primary" auto>
-            Update Product
+          <Button isDisabled={updateLoading} type="submit" color="primary" auto>
+            {updateLoading ? "Updating.." : "Update Product"}
           </Button>
         </form>
       </div>
