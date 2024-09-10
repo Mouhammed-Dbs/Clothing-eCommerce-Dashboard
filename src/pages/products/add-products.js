@@ -47,6 +47,7 @@ export default function AddProductsPage() {
     title: "",
     description: "",
     price: "",
+    priceAfterDiscount: "",
     quantity: "",
     imageCover: null,
     images: [],
@@ -246,6 +247,32 @@ export default function AddProductsPage() {
               name="price"
               placeholder="Product Price"
               value={product.price}
+              onChange={handleChange}
+              radius="sm"
+              startContent={
+                <div className="pointer-events-none flex items-center">
+                  <span className="text-orange-4000 text-lg">$</span>
+                </div>
+              }
+            />
+            {/* Price After Discount */}
+            <label className="text-lg font-semibold text-orange-400 inline-block">
+              Price After Discount
+            </label>
+            <Input
+              variant="bordered"
+              size="lg"
+              color="primary"
+              classNames={{
+                input: "text-red-500 font-semibold text-black",
+                base: "bg-transparent rounded-xl",
+                inputWrapper: "bg-white",
+                innerWrapper: "bg-transparent",
+              }}
+              type="number"
+              name="priceAfterDiscount"
+              placeholder="Product Price After Discount"
+              value={product.priceAfterDiscount}
               onChange={handleChange}
               radius="sm"
               startContent={

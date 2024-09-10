@@ -58,6 +58,7 @@ const EditProduct = () => {
     title: "",
     description: "",
     price: "",
+    priceAfterDiscount: "",
     quantity: "",
     subCategory: [],
     sizes: [],
@@ -164,6 +165,7 @@ const EditProduct = () => {
       title: formData.title,
       description: formData.description,
       price: formData.price,
+      priceAfterDiscount: formData.priceAfterDiscount,
       quantity: formData.quantity,
       selectedColors: formData.color || [],
       selectedSizes: formData.size || [],
@@ -359,7 +361,31 @@ const EditProduct = () => {
               </div>
             }
           />
-
+          <label className="text-lg font-semibold text-orange-500 inline-block">
+            Price After Discount
+          </label>
+          <Input
+            variant="bordered"
+            size="lg"
+            color="primary"
+            classNames={{
+              input: "text-red-500 font-semibold text-black",
+              base: "bg-transparent rounded-xl",
+              inputWrapper: "bg-white",
+              innerWrapper: "bg-transparent",
+            }}
+            type="number"
+            name="priceAfterDiscount"
+            placeholder="Product Price After Discount"
+            value={formData.priceAfterDiscount}
+            onChange={handleChange}
+            radius="sm"
+            startContent={
+              <div className="pointer-events-none flex items-center">
+                <span className="text-orange-4000 text-lg">$</span>
+              </div>
+            }
+          />
           <label className="text-lg font-semibold text-orange-500 inline-block">
             Quantity *
           </label>
