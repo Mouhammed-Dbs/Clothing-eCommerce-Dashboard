@@ -336,6 +336,9 @@ export default function Products() {
                   Price
                 </TableCell>
                 <TableCell sx={{ fontWeight: "bold", color: "#c2410c" }}>
+                  Discount Price
+                </TableCell>
+                <TableCell sx={{ fontWeight: "bold", color: "#c2410c" }}>
                   Size
                 </TableCell>
                 <TableCell sx={{ fontWeight: "bold", color: "#c2410c" }}>
@@ -359,6 +362,7 @@ export default function Products() {
                   <TableCell>{product.description}</TableCell>
                   <TableCell>{product.quantity}</TableCell>
                   <TableCell>{product.price}</TableCell>
+                  <TableCell>{product.priceAfterDiscount || "--"}</TableCell>
                   <TableCell>{product.sizes.join(", ")}</TableCell>
                   <TableCell className="flex justify-center items-center">
                     {product.subcategories.map((subCategory) => (
