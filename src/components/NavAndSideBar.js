@@ -102,7 +102,7 @@ const NavAndSideBar = (props) => {
       <Divider />
       <List>
         {drawerItems.map(({ text, icon, href }) => (
-          <ListItem disablePadding key={text}>
+          <ListItem onClick={handleDrawerClose} disablePadding key={text}>
             <Link href={href} passHref legacyBehavior>
               <ListItemButton
                 component="a"
