@@ -121,6 +121,7 @@ const EditProduct = () => {
               title: productData.title || "",
               description: productData.description || "",
               price: productData.price || "",
+              priceAfterDiscount: productData.priceAfterDiscount || "",
               subCategory: productData.subcategories
                 ? productData.subcategories.map((sub) => sub._id)
                 : [],
@@ -184,6 +185,8 @@ const EditProduct = () => {
 
     try {
       setUpdateLoading(true);
+      if (!formDataToSend.priceAfterDiscount)
+        delete formData.priceAfterDiscount;
       const res = await updateProduct(id, formDataToSend);
       setUpdateLoading(false);
       if (!res.error) {

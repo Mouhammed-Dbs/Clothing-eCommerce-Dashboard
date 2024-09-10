@@ -130,13 +130,16 @@ export default function AddProductsPage() {
       return;
     }
 
-    setLoading(true); // تعيين حالة التحميل إلى true
+    setLoading(true);
     try {
-      await addProducts({
+      const prod = {
         ...product,
         selectedColors: product.selectedColors,
         selectedSizes: product.selectedSizes,
-      });
+      };
+      if (("" + product.priceAfterDiscount).length == 0)
+        delete prod.priceAfterDiscount;
+      await addProducts(prod);
       router.push("/products");
     } catch (error) {
       console.error("Error adding product:", error);
