@@ -31,7 +31,7 @@ exports.addSubCategory = async (name) => {
       `${process.env.BASE_API_URL}/api/v1/subcategories`,
       {
         name,
-        category: "66ba082cbc9bbcd6bc0f16c1",
+        category: "66e33dc3b81f9202a1774eaf",
       },
       {
         headers: {
