@@ -1,3 +1,5 @@
+import Head from "next/head";
+
 export default function Home() {
   return (
     <>
@@ -14,8 +16,9 @@ export default function Home() {
             Under Construction
           </h1>
           <p className="text-lg text-gray-700">
-            We're working hard to bring you new content. This page will be
-            updated soon. Stay tuned!
+            {
+              "We're working hard to bring you new content. This page will be updated soon. Stay tuned!"
+            }
           </p>
         </div>
       </div>
