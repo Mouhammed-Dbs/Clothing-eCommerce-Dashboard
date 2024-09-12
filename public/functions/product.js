@@ -21,7 +21,7 @@ exports.addProducts = async (data) => {
       data.images.forEach((image) => formData.append("images", image));
     }
     formData.append("title", data.title);
-    formData.append("category", "66ba082cbc9bbcd6bc0f16c1");
+    formData.append("category", "66e33dc3b81f9202a1774eaf");
     formData.append("description", data.description);
     formData.append("price", data.price);
     formData.append("quantity", data.quantity);
@@ -98,7 +98,7 @@ exports.updateProduct = async (id, data) => {
       data.images.forEach((image) => formData.append("images", image));
     }
     formData.append("title", data.title);
-    formData.append("category", "66ba082cbc9bbcd6bc0f16c1");
+    formData.append("category", "66e33dc3b81f9202a1774eaf");
     formData.append("description", data.description);
     formData.append("price", data.price);
     formData.append("quantity", data.quantity);
