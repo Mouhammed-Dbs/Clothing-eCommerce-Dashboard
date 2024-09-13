@@ -21,7 +21,10 @@ export default function HomeLayout({ children }) {
           setPageLoading(false);
         }
       } catch (err) {
-        if (err.response.status === 401) logoutUser();
+        if (err.response?.status === 401) {
+          await router.replace("/login");
+          logoutUser();
+        }
         setError(
           "There was an error connecting to the server. Please try again later."
         );
