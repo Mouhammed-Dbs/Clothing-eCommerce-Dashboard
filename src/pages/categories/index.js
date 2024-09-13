@@ -90,8 +90,10 @@ export default function Categories() {
     }
   };
 
-  const handleDeleteCategory = (id) => {
-    setCategoryToDelete(id);
+  const handleDeleteCategory = () => {
+    if (!selectedCategory) return;
+
+    setCategoryToDelete(selectedCategory._id);
     setOpenDeleteDialog(true);
   };
 
@@ -175,7 +177,7 @@ export default function Categories() {
             </TableHead>
             <TableBody>
               {subCategories.map((category) => (
-                <TableRow key={category.id}>
+                <TableRow key={category._id}>
                   <TableCell>{category.name}</TableCell>
                   <TableCell padding="none" sx={{ paddingLeft: "35px" }}>
                     {category.productCount}
