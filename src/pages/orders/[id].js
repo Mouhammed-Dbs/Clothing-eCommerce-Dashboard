@@ -9,7 +9,6 @@ import {
   Box,
   Typography,
   Button,
-  CircularProgress,
   Grid,
   Paper,
   Table,
@@ -85,7 +84,7 @@ export default function OrderDetailPage() {
           <Typography
             variant="h4"
             gutterBottom
-            sx={{ mb: 2, color: "#c2410c" }}
+            sx={{ mb: 2, color: "#3d3f36" }}
           >
             Order Details
           </Typography>
@@ -95,11 +94,11 @@ export default function OrderDetailPage() {
               padding: 3,
               mb: 3,
               backgroundColor: "#f1f5f9",
-              border: "1px solid #fb923c",
+              border: "1px solid #4d4e49",
               borderRadius: "8px",
             }}
           >
-            <Typography variant="h6" sx={{ color: "#c2410c" }}>
+            <Typography variant="h6" sx={{ color: "#3d3f36" }}>
               Order ID: {order._id}
             </Typography>
             <Typography variant="h6" sx={{ color: "#6b7280" }}>
@@ -128,10 +127,10 @@ export default function OrderDetailPage() {
                     onClick={handleUpdatePaid}
                     disabled={updating || order.isPaid}
                     sx={{
-                      border: "1px solid #fb923c",
-                      backgroundColor: "orange",
+                      border: "1px solid #4d4e49",
+                      backgroundColor: "#4d4e49",
                       color: "#fff",
-                      "&:hover": { backgroundColor: "#ea580c" },
+                      "&:hover": { backgroundColor: "#3d3f36" },
                     }}
                   >
                     {updating ? "Updating..." : "Mark as Paid"}
@@ -144,7 +143,7 @@ export default function OrderDetailPage() {
                     onClick={handleUpdateDelivered}
                     disabled={updating || order.isDelivered}
                     sx={{
-                      border: "1px solid #fb923c",
+                      border: "1px solid #4d4e49",
                       backgroundColor: "#f87171",
                       color: "#fff",
                       "&:hover": { backgroundColor: "#ef4444" },
@@ -158,13 +157,13 @@ export default function OrderDetailPage() {
           </Paper>
 
           <Box marginTop={4}>
-            <Typography variant="h6" sx={{ mb: 2, color: "#c2410c" }}>
+            <Typography variant="h6" sx={{ mb: 2, color: "#3d3f36" }}>
               Order Items:
             </Typography>
             <TableContainer
               component={Paper}
               sx={{
-                border: "1px solid #fb923c",
+                border: "1px solid #4d4e49",
                 backgroundColor: "#f1f5f9",
                 boxShadow: "none",
                 borderRadius: "8px",
@@ -173,19 +172,19 @@ export default function OrderDetailPage() {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell sx={{ fontWeight: "bold", color: "#c2410c" }}>
+                    <TableCell sx={{ fontWeight: "bold", color: "#3d3f36" }}>
                       Product
                     </TableCell>
-                    <TableCell sx={{ fontWeight: "bold", color: "#c2410c" }}>
+                    <TableCell sx={{ fontWeight: "bold", color: "#3d3f36" }}>
                       Quantity
                     </TableCell>
-                    <TableCell sx={{ fontWeight: "bold", color: "#c2410c" }}>
+                    <TableCell sx={{ fontWeight: "bold", color: "#3d3f36" }}>
                       Color
                     </TableCell>
-                    <TableCell sx={{ fontWeight: "bold", color: "#c2410c" }}>
+                    <TableCell sx={{ fontWeight: "bold", color: "#3d3f36" }}>
                       Size
                     </TableCell>
-                    <TableCell sx={{ fontWeight: "bold", color: "#c2410c" }}>
+                    <TableCell sx={{ fontWeight: "bold", color: "#3d3f36" }}>
                       Price
                     </TableCell>
                   </TableRow>

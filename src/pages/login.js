@@ -30,10 +30,10 @@ export default function Login() {
   };
 
   return (
-    <main className="flex items-center justify-center min-h-screen bg-gradient-to-br from-orange-200 via-orange-300 to-orange-400 px-4">
+    <main className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400 px-4">
       <div className="bg-white p-8 rounded-xl shadow-2xl max-w-md w-full">
         <div className="mb-6 text-center">
-          <h1 className="text-4xl font-extrabold text-orange-500">Saramoda</h1>
+          <h1 className="text-4xl font-extrabold text-primary">Saramoda</h1>
         </div>
         <h2 className="text-3xl font-extrabold text-gray-800 mb-6 text-center">
           Login to Dashboard
@@ -55,7 +55,7 @@ export default function Login() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-orange-500 focus:border-orange-500"
+              className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-primary focus:border-primary"
             />
           </div>
           <div className="relative">
@@ -73,7 +73,7 @@ export default function Login() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-orange-500 focus:border-orange-500"
+              className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-primary focus:border-primary"
             />
             <div
               className="absolute inset-y-0 top-6 right-0 pr-3 flex items-center cursor-pointer"
@@ -94,7 +94,7 @@ export default function Login() {
                 type="checkbox"
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
-                className="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded"
+                className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
               />
               <label
                 htmlFor="remember-me"
@@ -106,7 +106,7 @@ export default function Login() {
             <div className="text-sm">
               <Link
                 href="/forget-password"
-                className="font-medium text-orange-600 hover:text-orange-500"
+                className="font-medium text-primary hover:text-primary-dark"
               >
                 Forgot your password?
               </Link>
@@ -117,9 +117,9 @@ export default function Login() {
             disabled={isLoading}
             className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-full shadow-sm text-white ${
               isLoading
-                ? "bg-orange-300 cursor-not-allowed"
-                : "bg-orange-500 hover:bg-orange-600"
-            } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 font-semibold transition duration-300`}
+                ? "bg-primary cursor-not-allowed"
+                : "bg-primary hover:bg-primary-dark"
+            } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary font-semibold transition duration-300`}
           >
             {isLoading ? "Signing in..." : "Sign in"}
           </button>

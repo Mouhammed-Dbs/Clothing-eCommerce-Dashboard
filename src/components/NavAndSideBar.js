@@ -14,7 +14,6 @@ import {
   Toolbar,
   Typography,
   Avatar,
-  Button,
 } from "@mui/material";
 import {
   MdDashboard,
@@ -22,14 +21,10 @@ import {
   MdFormatListBulleted,
   MdListAlt,
 } from "react-icons/md";
-import {
-  Menu as MenuIcon,
-  Dashboard as DashboardIcon,
-  ShoppingCart as ShoppingCartIcon,
-  FormatListBulletedSharp as CategoriesIcon,
-} from "@mui/icons-material";
+import { Menu as MenuIcon } from "@mui/icons-material";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import { Button } from "@nextui-org/button";
 
 const drawerWidth = 240;
 
@@ -66,35 +61,35 @@ const NavAndSideBar = (props) => {
   const drawerItems = [
     {
       text: "Dashboard",
-      icon: <MdDashboard className="text-orange-600 text-3xl" />,
+      icon: <MdDashboard className="text-primary text-3xl" />,
       href: "/",
     },
     {
       text: "Products",
-      icon: <MdShoppingCart className="text-orange-600 text-3xl" />,
+      icon: <MdShoppingCart className="text-primary text-3xl" />,
       href: "/products",
     },
     {
       text: "Categories",
-      icon: <MdFormatListBulleted className="text-orange-600 text-3xl" />,
+      icon: <MdFormatListBulleted className="text-primary text-3xl" />,
       href: "/categories",
     },
     {
       text: "Orders",
-      icon: <MdListAlt className="text-orange-600 text-3xl" />, // Icon for Orders
+      icon: <MdListAlt className="text-primary text-3xl" />,
       href: "/orders",
     },
   ];
 
   const drawer = (
     <div>
-      <Box sx={{ display: "flex", alignItems: "center", p: 1.5 }}>
-        <Avatar alt={user.name} src="/path/to/profile.jpg" sx={{ mr: 2 }} />
+      <Box className="flex items-center p-1.5">
+        <Avatar alt={user.name} src="/path/to/profile.jpg" className="mr-2" />
         <Box>
-          <Typography variant="subtitle1" className="text-orange-500">
+          <Typography variant="subtitle1" className="text-primary">
             {user.name}
           </Typography>
-          <Typography variant="body2" color="textSecondary">
+          <Typography variant="body2" className="text-gray-600">
             {user.role}
           </Typography>
         </Box>
@@ -108,8 +103,8 @@ const NavAndSideBar = (props) => {
                 component="a"
                 sx={{
                   width: "100%",
-                  backgroundColor: isActive(href) ? "#fbd38d" : "inherit",
-                  "&:hover": { backgroundColor: "#fed7aa" },
+                  backgroundColor: isActive(href) ? "#d3d5d0" : "inherit",
+                  "&:hover": { backgroundColor: "#d3d5d0" },
                 }}
               >
                 <ListItemIcon>{icon}</ListItemIcon>
@@ -127,38 +122,30 @@ const NavAndSideBar = (props) => {
     window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box className="flex">
       <CssBaseline />
       <AppBar
         position="fixed"
-        sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-        }}
+        className={`w-full sm:w-[calc(100%-${drawerWidth}px)] ml-0 sm:ml-[${drawerWidth}px]`}
       >
-        <Toolbar className="bg-slate-100">
+        <Toolbar className="bg-white">
           <IconButton
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" }, color: "#fb923c" }}
+            className="mr-2 text-primary"
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            <p className="text-lg font-bold text-orange-400 font-serif italic">
+          <Typography variant="h6" noWrap component="div" className="flex-grow">
+            <p className="text-lg font-bold text-primary font-serif italic">
               SARAMODA
             </p>
-            <p className="text-xs text-orange-800">control panel</p>
+            <p className="text-xs text-gray-800">control panel</p>
           </Typography>
-          <Box sx={{ display: "flex", gap: 1 }}>
+          <Box className="flex gap-1">
             <Button
-              sx={{
-                border: "1px solid #fb923c",
-                backgroundColor: "orange",
-                color: "#fff",
-                "&:hover": { backgroundColor: "#ea580c" },
-              }}
+              className="border-1 border-primary bg-primary text-white"
               onClick={logoutUser}
             >
               Logout
@@ -168,7 +155,7 @@ const NavAndSideBar = (props) => {
       </AppBar>
       <Box
         component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+        className="w-full flex-shrink-0"
         aria-label="mailbox folders"
       >
         <Drawer
@@ -178,28 +165,19 @@ const NavAndSideBar = (props) => {
           onTransitionEnd={handleDrawerTransitionEnd}
           onClose={handleDrawerClose}
           ModalProps={{ keepMounted: true }}
-          sx={{
-            display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-              backgroundColor: "#f1f5f9",
-            },
+          className="block"
+          PaperProps={{
+            className: "box-border w-[240px] bg-[#f1f5f9]",
           }}
         >
           {drawer}
         </Drawer>
         <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: "none", sm: "block" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-              backgroundColor: "#f1f5f9",
-            },
+          variant="persistent"
+          open={mobileOpen}
+          PaperProps={{
+            className: "box-border w-[240px] bg-[#f1f5f9]",
           }}
-          open
         >
           {drawer}
         </Drawer>

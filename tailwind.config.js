@@ -18,8 +18,18 @@ module.exports = {
       },
       colors: {
         primary: {
-          DEFAULT: "#fb923c", // orange-400
+          DEFAULT: "#4d4e49", // Default primary color
+          100: "#d3d5d0", // Light gray
+          200: "#c1c3bd", // Light gray 2
+          300: "#a8aba5", // Medium gray
+          400: "#8f918a", // Medium dark gray
+          500: "#4d4e49", // Your original primary color
+          600: "#4a4c42", // Darker shade
+          700: "#3d3f36", // Even darker shade
+          800: "#30322a", // Dark gray
+          900: "#222525", // Darkest gray
         },
+        "primary-dark": "#4a4c42",
       },
     },
   },

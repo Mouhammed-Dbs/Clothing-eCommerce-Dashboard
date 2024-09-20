@@ -12,19 +12,19 @@ import { Spinner } from "@nextui-org/react";
 const customStyles = {
   control: (provided) => ({
     ...provided,
-    borderColor: "orange",
+    borderColor: "#4d4e49",
     boxShadow: "none",
     cursor: "pointer",
     padding: "4px",
     backgroundColor: "white",
-    "&:hover": { borderColor: "orange" },
+    "&:hover": { borderColor: "#4d4e49" },
   }),
   option: (provided, state) => ({
     ...provided,
-    backgroundColor: state.isSelected ? "orange" : "white",
+    backgroundColor: state.isSelected ? "#4d4e49" : "white",
     color: state.isSelected ? "white" : "black",
     "&:hover": {
-      backgroundColor: "#fb923c",
+      backgroundColor: "#4d4e49",
       cursor: "pointer",
       color: "white",
       fontWeight: "bold",
@@ -32,7 +32,7 @@ const customStyles = {
   }),
   multiValue: (provided) => ({
     ...provided,
-    backgroundColor: "orange",
+    backgroundColor: "#4d4e49",
     color: "white",
     borderRadius: "12px",
     fontWeight: "bold",
@@ -41,7 +41,7 @@ const customStyles = {
   multiValueRemove: (provided) => ({
     ...provided,
     color: "white",
-    "&:hover": { backgroundColor: "orange" },
+    "&:hover": { backgroundColor: "#3d3f36" },
   }),
 };
 
@@ -265,13 +265,13 @@ const EditProduct = () => {
     );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-200 via-orange-300 to-orange-400 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400 p-6">
       <div className="max-w-2xl mx-auto p-5 font-sans bg-slate-100 shadow-2xl rounded-lg">
-        <h1 className="text-4xl font-extrabold text-center text-orange-500 mb-2">
+        <h1 className="text-4xl font-extrabold text-center text-primary-500 mb-2">
           Edit Product
         </h1>
         <form className="flex flex-col gap-2 mb-6" onSubmit={handleSubmit}>
-          <label className="text-lg font-semibold text-orange-500 inline-block">
+          <label className="text-lg font-semibold text-primary-500 inline-block">
             Categories *
           </label>
           <Select
@@ -297,7 +297,7 @@ const EditProduct = () => {
             styles={customStyles}
             className="w-full"
           />
-          <label className="text-lg font-semibold text-orange-500 inline-block">
+          <label className="text-lg font-semibold text-primary-500 inline-block">
             Name *
           </label>
           <Input
@@ -318,7 +318,7 @@ const EditProduct = () => {
             radius="sm"
           />
 
-          <label className="text-lg font-semibold text-orange-500 inline-block">
+          <label className="text-lg font-semibold text-primary-500 inline-block">
             Description *
           </label>
           <Input
@@ -339,7 +339,7 @@ const EditProduct = () => {
             radius="sm"
           />
 
-          <label className="text-lg font-semibold text-orange-500 inline-block">
+          <label className="text-lg font-semibold text-primary-500 inline-block">
             Price *
           </label>
           <Input
@@ -364,7 +364,7 @@ const EditProduct = () => {
               </div>
             }
           />
-          <label className="text-lg font-semibold text-orange-500 inline-block">
+          <label className="text-lg font-semibold text-primary-500 inline-block">
             Price After Discount
           </label>
           <Input
@@ -389,7 +389,7 @@ const EditProduct = () => {
               </div>
             }
           />
-          <label className="text-lg font-semibold text-orange-500 inline-block">
+          <label className="text-lg font-semibold text-primary-500 inline-block">
             Quantity *
           </label>
           <Input
@@ -410,7 +410,7 @@ const EditProduct = () => {
             radius="sm"
           />
 
-          <label className="text-lg font-semibold text-orange-500 inline-block">
+          <label className="text-lg font-semibold text-primary-500 inline-block">
             Color *
           </label>
           <div className="flex flex-row gap-5 items-center">
@@ -445,7 +445,7 @@ const EditProduct = () => {
               </Button>
             </Tooltip>
           </div>
-          <label className="text-lg font-semibold text-orange-500 inline-block">
+          <label className="text-lg font-semibold text-primary-500 inline-block">
             Size *
           </label>
           <div className="flex flex-row gap-5 items-center">
@@ -481,7 +481,7 @@ const EditProduct = () => {
             </Tooltip>
           </div>
 
-          <label className="text-lg font-semibold text-orange-500 inline-block">
+          <label className="text-lg font-semibold text-primary-500 inline-block">
             Cover Image *
           </label>
           {formData.coverImage && (
@@ -520,7 +520,7 @@ const EditProduct = () => {
             radius="sm"
           />
 
-          <label className="text-lg font-semibold text-orange-500 inline-block">
+          <label className="text-lg font-semibold text-primary-500 inline-block">
             Product Images *
           </label>
           <div className="flex flex-wrap gap-2 mb-2">

@@ -9,19 +9,19 @@ import { getSubCategories } from "../../../public/functions/subcategories";
 const customStyles = {
   control: (provided) => ({
     ...provided,
-    borderColor: "orange",
+    borderColor: "#4d4e49",
     boxShadow: "none",
     cursor: "pointer",
     padding: "4px",
     backgroundColor: "white",
-    "&:hover": { borderColor: "orange" },
+    "&:hover": { borderColor: "#4d4e49" },
   }),
   option: (provided, state) => ({
     ...provided,
-    backgroundColor: state.isSelected ? "orange" : "white",
+    backgroundColor: state.isSelected ? "#4d4e49" : "white",
     color: state.isSelected ? "white" : "black",
     "&:hover": {
-      backgroundColor: "#fb923c",
+      backgroundColor: "#4d4e49",
       cursor: "pointer",
       color: "white",
       fontWeight: "bold",
@@ -29,7 +29,7 @@ const customStyles = {
   }),
   multiValue: (provided) => ({
     ...provided,
-    backgroundColor: "orange",
+    backgroundColor: "#4d4e49",
     color: "white",
     borderRadius: "12px",
     fontWeight: "bold",
@@ -38,7 +38,7 @@ const customStyles = {
   multiValueRemove: (provided) => ({
     ...provided,
     color: "white",
-    "&:hover": { backgroundColor: "orange" },
+    "&:hover": { backgroundColor: "#3d3f36" },
   }),
 };
 
@@ -173,15 +173,15 @@ export default function AddProductsPage() {
 
   return (
     <>
-      <div className="min-h-screen bg-gradient-to-br from-orange-200 via-orange-300 to-orange-400 p-6">
+      <div className="min-h-screen bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400 p-6">
         <div className="max-w-xl mx-auto p-5 font-sans bg-slate-100 shadow-2xl rounded-lg">
-          <h1 className="text-4xl font-extrabold text-center text-orange-500 mb-2">
+          <h1 className="text-4xl font-extrabold text-center text-primary-500 mb-2">
             Add Product
           </h1>
           <form className="flex flex-col gap-2 mb-6">
             {/* Categories Input */}
             <div>
-              <label className="text-lg font-semibold text-orange-500 mb-2 inline-block">
+              <label className="text-lg font-semibold text-primary-500 mb-2 inline-block">
                 Categories *
               </label>
               <div className="flex flex-row gap-5 items-center">
@@ -211,7 +211,7 @@ export default function AddProductsPage() {
             </div>
 
             {/* Name Input */}
-            <label className="text-lg font-semibold text-orange-500 inline-block">
+            <label className="text-lg font-semibold text-primary-500 inline-block">
               Name *
             </label>
             <Input
@@ -233,7 +233,7 @@ export default function AddProductsPage() {
             />
 
             {/* Price Input */}
-            <label className="text-lg font-semibold text-orange-400 inline-block">
+            <label className="text-lg font-semibold text-primary-400 inline-block">
               Price *
             </label>
             <Input
@@ -254,12 +254,12 @@ export default function AddProductsPage() {
               radius="sm"
               startContent={
                 <div className="pointer-events-none flex items-center">
-                  <span className="text-orange-4000 text-lg">$</span>
+                  <span className="text-primary-4000 text-lg">$</span>
                 </div>
               }
             />
             {/* Price After Discount */}
-            <label className="text-lg font-semibold text-orange-400 inline-block">
+            <label className="text-lg font-semibold text-primary-400 inline-block">
               Price After Discount
             </label>
             <Input
@@ -280,13 +280,13 @@ export default function AddProductsPage() {
               radius="sm"
               startContent={
                 <div className="pointer-events-none flex items-center">
-                  <span className="text-orange-4000 text-lg">$</span>
+                  <span className="text-primary-4000 text-lg">$</span>
                 </div>
               }
             />
 
             {/* Quantity Input */}
-            <label className="text-lg font-semibold text-orange-500 inline-block">
+            <label className="text-lg font-semibold text-primary-500 inline-block">
               Quantity *
             </label>
             <Input
@@ -308,7 +308,7 @@ export default function AddProductsPage() {
             />
 
             {/* Sizes Input */}
-            <label className="text-lg font-semibold text-orange-500 inline-block">
+            <label className="text-lg font-semibold text-primary-500 inline-block">
               Sizes *
             </label>
             <div className="flex flex-row gap-5 items-center">
@@ -343,7 +343,7 @@ export default function AddProductsPage() {
             </div>
 
             {/* Colors Input */}
-            <label className="text-lg font-semibold text-orange-500 inline-block">
+            <label className="text-lg font-semibold text-primary-500 inline-block">
               Colors *
             </label>
             <div className="flex flex-row gap-5 items-center">
@@ -378,7 +378,7 @@ export default function AddProductsPage() {
             </div>
 
             {/* Description Input */}
-            <label className="text-lg font-semibold text-orange-500 inline-block">
+            <label className="text-lg font-semibold text-primary-500 inline-block">
               Description *
             </label>
             <Input
@@ -400,7 +400,7 @@ export default function AddProductsPage() {
             />
 
             {/* Cover Image Input */}
-            <label className="text-lg font-semibold text-orange-500 inline-block">
+            <label className="text-lg font-semibold text-primary-500 inline-block">
               Cover Image *
             </label>
             <Input
@@ -414,7 +414,7 @@ export default function AddProductsPage() {
             />
 
             {/* Additional Images Input */}
-            <label className="text-lg font-semibold text-orange-500 inline-block">
+            <label className="text-lg font-semibold text-primary-500 inline-block">
               Additional Images
             </label>
             <Input

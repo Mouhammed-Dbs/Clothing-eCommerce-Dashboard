@@ -102,12 +102,12 @@ export default function ForgetPassword() {
   };
 
   return (
-    <div className="p-4 md:p-8 lg:p-12 xl:p-16 min-h-screen bg-gradient-to-br from-orange-200 via-orange-300 to-orange-400 flex flex-col justify-center items-center">
+    <div className="p-4 md:p-8 lg:p-12 xl:p-16 min-h-screen bg-gradient-to-br from-primary-200 via-primary-300 to-primary-400 flex flex-col justify-center items-center">
       <div
-        className="bg-white rounded-lg shadow-md p-6 md:p-8 lg:p-10 xl:p-12 transform transition-transform duration-300 border-t-4 border-orange-500"
+        className="bg-white rounded-lg shadow-md p-6 md:p-8 lg:p-10 xl:p-12 transform transition-transform duration-300 border-t-4 border-primary-500"
         style={{ width: "100%", maxWidth: "400px" }}
       >
-        <h2 className="text-2xl lg:text-3xl xl:text-4xl font-bold mb-4 text-center text-orange-500">
+        <h2 className="text-2xl lg:text-3xl xl:text-4xl font-bold mb-4 text-center text-primary-500">
           Forgot Password
         </h2>
         <p className="text-gray-600 text-md lg:text-lg xl:text-xl mb-6 text-center">
@@ -133,15 +133,15 @@ export default function ForgetPassword() {
               placeholder="Your Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="border-2 border-gray-300 p-3 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="border-2 border-gray-300 p-3 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-primary-500"
               required
             />
             <button
               type="submit"
-              className={`bg-orange-500 text-white py-3 rounded-lg transition-colors duration-300 ${
+              className={`bg-primary-500 text-white py-3 rounded-lg transition-colors duration-300 ${
                 isLoading
-                  ? "bg-orange-300 cursor-not-allowed"
-                  : "hover:bg-orange-600"
+                  ? "bg-primary-300 cursor-not-allowed"
+                  : "hover:bg-primary-600"
               }`}
               disabled={isLoading}
             >
@@ -155,10 +155,10 @@ export default function ForgetPassword() {
             <CodeInput onCodeChange={setResetCode} />
             <button
               type="submit"
-              className={`bg-orange-500 text-white py-3 rounded-lg transition-colors duration-300 ${
+              className={`bg-primary-500 text-white py-3 rounded-lg transition-colors duration-300 mt-4 ${
                 isLoading
-                  ? "bg-orange-300 cursor-not-allowed"
-                  : "hover:bg-orange-600"
+                  ? "bg-primary-300 cursor-not-allowed"
+                  : "hover:bg-primary-600"
               }`}
               disabled={isLoading}
             >
@@ -177,7 +177,7 @@ export default function ForgetPassword() {
               placeholder="New Password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              className="border-2 border-gray-300 p-3 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="border-2 border-gray-300 p-3 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-primary-500"
               required
             />
             <button
@@ -189,10 +189,10 @@ export default function ForgetPassword() {
             </button>
             <button
               type="submit"
-              className={`bg-orange-500 text-white py-3 rounded-lg transition-colors duration-300 ${
+              className={`bg-primary-500 text-white py-3 rounded-lg transition-colors duration-300 ${
                 isLoading
-                  ? "bg-orange-300 cursor-not-allowed"
-                  : "hover:bg-orange-600"
+                  ? "bg-primary-300 cursor-not-allowed"
+                  : "hover:bg-primary-600"
               }`}
               disabled={isLoading}
             >

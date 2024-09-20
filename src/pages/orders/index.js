@@ -24,8 +24,8 @@ export default function OrdersPage() {
   const router = useRouter();
 
   const fetchOrders = async (page = 1) => {
-    setLoading(page === 1); // Set loading to true only when fetching the first page
-    setLoadingMore(page !== 1); // Set loadingMore to true when fetching additional pages
+    setLoading(page === 1);
+    setLoadingMore(page !== 1);
     try {
       const res = await getUserOrders(page);
       setOrders((prevOrders) =>
@@ -42,7 +42,7 @@ export default function OrdersPage() {
   };
 
   useEffect(() => {
-    fetchOrders(); // Fetch the first page of orders on component mount
+    fetchOrders();
   }, []);
 
   const handleRowClick = (orderId) => {
@@ -57,7 +57,7 @@ export default function OrdersPage() {
 
   return (
     <Box padding={2}>
-      <Typography variant="h4" gutterBottom sx={{ mb: 2, color: "#c2410c" }}>
+      <Typography variant="h4" gutterBottom sx={{ mb: 2, color: "#3d3f36" }}>
         Orders
       </Typography>
 
@@ -75,7 +75,7 @@ export default function OrdersPage() {
           <TableContainer
             component={Paper}
             sx={{
-              border: "1px solid #fb923c",
+              border: "1px solid #4d4e49",
               backgroundColor: "#f1f5f9",
               boxShadow: "none",
               borderRadius: "8px",
@@ -84,22 +84,22 @@ export default function OrdersPage() {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell sx={{ fontWeight: "bold", color: "#c2410c" }}>
+                  <TableCell sx={{ fontWeight: "bold", color: "#3d3f36" }}>
                     Order ID
                   </TableCell>
-                  <TableCell sx={{ fontWeight: "bold", color: "#c2410c" }}>
+                  <TableCell sx={{ fontWeight: "bold", color: "#3d3f36" }}>
                     Shipping Address
                   </TableCell>
-                  <TableCell sx={{ fontWeight: "bold", color: "#c2410c" }}>
+                  <TableCell sx={{ fontWeight: "bold", color: "#3d3f36" }}>
                     Total Price
                   </TableCell>
-                  <TableCell sx={{ fontWeight: "bold", color: "#c2410c" }}>
+                  <TableCell sx={{ fontWeight: "bold", color: "#3d3f36" }}>
                     Payment Method
                   </TableCell>
-                  <TableCell sx={{ fontWeight: "bold", color: "#c2410c" }}>
+                  <TableCell sx={{ fontWeight: "bold", color: "#3d3f36" }}>
                     Paid
                   </TableCell>
-                  <TableCell sx={{ fontWeight: "bold", color: "#c2410c" }}>
+                  <TableCell sx={{ fontWeight: "bold", color: "#3d3f36" }}>
                     Delivered
                   </TableCell>
                 </TableRow>
@@ -132,8 +132,8 @@ export default function OrdersPage() {
               <Button
                 variant="contained"
                 sx={{
-                  backgroundColor: "#fb923c",
-                  "&:hover": { backgroundColor: "#ea580c" },
+                  backgroundColor: "#4d4e49",
+                  "&:hover": { backgroundColor: "#3d3f36" },
                 }}
                 onClick={handleLoadMore}
                 disabled={loadingMore}

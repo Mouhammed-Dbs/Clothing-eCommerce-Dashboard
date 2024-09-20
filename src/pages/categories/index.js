@@ -144,10 +144,10 @@ export default function Categories() {
           startIcon={<AddCircleIcon className="text-white" />}
           sx={{
             height: "38px",
-            border: "1px solid #fb923c",
-            backgroundColor: "orange",
+            border: "1px solid #4d4e49",
+            backgroundColor: "#4d4e49",
             color: "#fff",
-            "&:hover": { backgroundColor: "#ea580c" },
+            "&:hover": { backgroundColor: "#3d3f36" },
             textTransform: "none",
             fontSize: "16px",
           }}
@@ -158,20 +158,20 @@ export default function Categories() {
       {subCategories.length > 0 && (
         <TableContainer
           component={Paper}
-          sx={{ border: "1px solid #fb923c", backgroundColor: "#f1f5f9" }}
+          sx={{ border: "1px solid ##4d4e49", backgroundColor: "#f1f5f9" }}
         >
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell sx={{ fontWeight: "bold", color: "#c2410c" }}>
+                <TableCell sx={{ fontWeight: "bold", color: "#3d3f36" }}>
                   Category Name
                 </TableCell>
-                <TableCell sx={{ fontWeight: "bold", color: "#c2410c" }}>
+                <TableCell sx={{ fontWeight: "bold", color: "#3d3f36" }}>
                   Products
                 </TableCell>
                 <TableCell
                   align="right"
-                  sx={{ fontWeight: "bold", color: "#c2410c" }}
+                  sx={{ fontWeight: "bold", color: "#3d3f36" }}
                 ></TableCell>
               </TableRow>
             </TableHead>
@@ -201,7 +201,7 @@ export default function Categories() {
                         Delete
                       </MenuItem>
                       <MenuItem onClick={handleOpenProductBySubCategory}>
-                        <MdFormatListBulleted className="text-orange-500 mr-2 text-3xl" />{" "}
+                        <MdFormatListBulleted className="text-primary-500 mr-2 text-3xl" />{" "}
                         Go to Products
                       </MenuItem>
                     </Menu>

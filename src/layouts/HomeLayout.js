@@ -37,7 +37,7 @@ export default function HomeLayout({ children }) {
 
   if (pageLoading)
     return (
-      <main className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-orange-200 via-orange-300 to-orange-400 px-4 text-center">
+      <main className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400 px-4 text-center">
         <div className="bg-white p-6 rounded-xl shadow-lg max-w-sm w-full">
           <Spinner size="xl" />
           <p className="mt-4 text-lg font-medium text-gray-700">
@@ -49,10 +49,9 @@ export default function HomeLayout({ children }) {
 
   if (error)
     return (
-      <main className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-orange-200 via-orange-300 to-orange-400 px-4 text-center">
+      <main className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400 px-4 text-center">
         <div className="bg-white p-6 rounded-xl shadow-lg max-w-sm w-full flex flex-col items-center">
           <FaExclamationTriangle size={48} className="text-red-500 mb-4" />{" "}
-          {/* أيقونة التحذير */}
           <p className="text-lg font-medium text-red-500">{error}</p>
           <p className="text-gray-600 mt-2">
             Please check your internet connection and try again.

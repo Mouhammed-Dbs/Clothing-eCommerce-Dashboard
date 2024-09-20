@@ -197,10 +197,10 @@ export default function Products() {
               borderRadius: "5px",
               "& .MuiOutlinedInput-root": {
                 "& fieldset": {
-                  borderColor: "#fb923c",
+                  borderColor: "#4d4e49",
                 },
                 "&:hover fieldset": {
-                  borderColor: "#ea580c",
+                  borderColor: "#3d3f36",
                 },
               },
             }}
@@ -209,7 +209,7 @@ export default function Products() {
                 <InputAdornment position="end">
                   <IconButton
                     onClick={() => fetchProducts(1, true)}
-                    sx={{ color: "#fb923c" }}
+                    sx={{ color: "#4d4e49" }}
                   >
                     <SearchIcon />
                   </IconButton>
@@ -231,10 +231,10 @@ export default function Products() {
               borderRadius: "5px",
               "& .MuiOutlinedInput-root": {
                 "& fieldset": {
-                  borderColor: "#fb923c",
+                  borderColor: "#4d4e49",
                 },
                 "&:hover fieldset": {
-                  borderColor: "#ea580c",
+                  borderColor: "#3d3f36",
                 },
               },
             }}
@@ -260,10 +260,10 @@ export default function Products() {
               borderRadius: "5px",
               "& .MuiOutlinedInput-root": {
                 "& fieldset": {
-                  borderColor: "#fb923c",
+                  borderColor: "#4d4e49",
                 },
                 "&:hover fieldset": {
-                  borderColor: "#ea580c",
+                  borderColor: "#3d3f36",
                 },
               },
             }}
@@ -301,10 +301,10 @@ export default function Products() {
               sx={{
                 width: "100%",
                 height: "38px",
-                border: "1px solid #fb923c",
-                backgroundColor: "orange",
+                border: "1px solid #4d4e49",
+                backgroundColor: "#3d3f36",
                 color: "#fff",
-                "&:hover": { backgroundColor: "#ea580c" },
+                "&:hover": { backgroundColor: "#3d3f36" },
                 textTransform: "none",
                 fontSize: "16px",
               }}
@@ -318,39 +318,39 @@ export default function Products() {
       {products.length > 0 && (
         <TableContainer
           component={Paper}
-          sx={{ border: "1px solid #fb923c", backgroundColor: "#f1f5f9" }}
+          sx={{ border: "1px solid #4d4e49", backgroundColor: "#f1f5f9" }}
         >
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell sx={{ fontWeight: "bold", color: "#c2410c" }}>
+                <TableCell sx={{ fontWeight: "bold", color: "#4d4e49" }}>
                   Name
                 </TableCell>
-                <TableCell sx={{ fontWeight: "bold", color: "#c2410c" }}>
+                <TableCell sx={{ fontWeight: "bold", color: "#4d4e49" }}>
                   Description
                 </TableCell>
-                <TableCell sx={{ fontWeight: "bold", color: "#c2410c" }}>
+                <TableCell sx={{ fontWeight: "bold", color: "#4d4e49" }}>
                   Quantity
                 </TableCell>
-                <TableCell sx={{ fontWeight: "bold", color: "#c2410c" }}>
+                <TableCell sx={{ fontWeight: "bold", color: "#4d4e49" }}>
                   Price
                 </TableCell>
-                <TableCell sx={{ fontWeight: "bold", color: "#c2410c" }}>
+                <TableCell sx={{ fontWeight: "bold", color: "#4d4e49" }}>
                   Discount Price
                 </TableCell>
-                <TableCell sx={{ fontWeight: "bold", color: "#c2410c" }}>
+                <TableCell sx={{ fontWeight: "bold", color: "#4d4e49" }}>
                   Size
                 </TableCell>
-                <TableCell sx={{ fontWeight: "bold", color: "#c2410c" }}>
+                <TableCell sx={{ fontWeight: "bold", color: "#4d4e49" }}>
                   Categories
                 </TableCell>
-                <TableCell sx={{ fontWeight: "bold", color: "#c2410c" }}>
+                <TableCell sx={{ fontWeight: "bold", color: "#4d4e49" }}>
                   Colors
                 </TableCell>
-                <TableCell sx={{ fontWeight: "bold", color: "#c2410c" }}>
+                <TableCell sx={{ fontWeight: "bold", color: "#4d4e49" }}>
                   Images
                 </TableCell>
-                <TableCell sx={{ fontWeight: "bold", color: "#c2410c" }}>
+                <TableCell sx={{ fontWeight: "bold", color: "#4d4e49" }}>
                   Edit Or Delete
                 </TableCell>
               </TableRow>
@@ -390,7 +390,7 @@ export default function Products() {
                   <TableCell>
                     <IconButton
                       onClick={() => handleEditProduct(product._id)}
-                      sx={{ color: "#fb923c" }}
+                      sx={{ color: "#4d4e49" }}
                     >
                       <EditIcon />
                     </IconButton>
@@ -440,8 +440,8 @@ export default function Products() {
               onClick={() => fetchProducts(currentPage + 1)}
               variant="contained"
               sx={{
-                backgroundColor: "#fb923c",
-                "&:hover": { backgroundColor: "#ea580c" },
+                backgroundColor: "#4d4e49",
+                "&:hover": { backgroundColor: "#3d3f36" },
               }}
             >
               Load More
@@ -474,7 +474,7 @@ export default function Products() {
       <Dialog
         PaperProps={{
           style: {
-            outline: "3px solid #fb923c",
+            outline: "3px solid #4d4e49",
           },
         }}
         open={openImageSlider}
@@ -494,7 +494,7 @@ export default function Products() {
           <DialogTitle
             id="image-slider-title"
             sx={{
-              color: "orange",
+              color: "#4d4e49",
               textAlign: "center",
               fontSize: "25px",
               fontWeight: "bold",
@@ -519,10 +519,10 @@ export default function Products() {
           <Carousel
             navButtonsProps={{
               style: {
-                color: "#ea580c",
+                color: "#3d3f36",
                 width: "40px",
                 height: "40px",
-                backgroundColor: "orange",
+                backgroundColor: "#4d4e49",
               },
             }}
             navButtonsAlwaysVisible
