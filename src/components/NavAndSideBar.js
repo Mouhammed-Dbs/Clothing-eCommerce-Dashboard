@@ -14,6 +14,7 @@ import {
   Toolbar,
   Typography,
   Avatar,
+  Button,
 } from "@mui/material";
 import {
   MdDashboard,
@@ -24,7 +25,6 @@ import {
 import { Menu as MenuIcon } from "@mui/icons-material";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import { Button } from "@nextui-org/button";
 
 const drawerWidth = 240;
 
@@ -61,35 +61,35 @@ const NavAndSideBar = (props) => {
   const drawerItems = [
     {
       text: "Dashboard",
-      icon: <MdDashboard className="text-primary text-3xl" />,
+      icon: <MdDashboard className="text-primary-600 text-3xl" />,
       href: "/",
     },
     {
       text: "Products",
-      icon: <MdShoppingCart className="text-primary text-3xl" />,
+      icon: <MdShoppingCart className="text-primary-600 text-3xl" />,
       href: "/products",
     },
     {
       text: "Categories",
-      icon: <MdFormatListBulleted className="text-primary text-3xl" />,
+      icon: <MdFormatListBulleted className="text-primary-600 text-3xl" />,
       href: "/categories",
     },
     {
       text: "Orders",
-      icon: <MdListAlt className="text-primary text-3xl" />,
+      icon: <MdListAlt className="text-primary-600 text-3xl" />, // Icon for Orders
       href: "/orders",
     },
   ];
 
   const drawer = (
     <div>
-      <Box className="flex items-center p-1.5">
-        <Avatar alt={user.name} src="/path/to/profile.jpg" className="mr-2" />
+      <Box sx={{ display: "flex", alignItems: "center", p: 1.5 }}>
+        <Avatar alt={user.name} src="/path/to/profile.jpg" sx={{ mr: 2 }} />
         <Box>
-          <Typography variant="subtitle1" className="text-primary">
+          <Typography variant="subtitle1" className="text-primary-500">
             {user.name}
           </Typography>
-          <Typography variant="body2" className="text-gray-600">
+          <Typography variant="body2" color="textSecondary">
             {user.role}
           </Typography>
         </Box>
@@ -122,30 +122,38 @@ const NavAndSideBar = (props) => {
     window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box className="flex">
+    <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar
         position="fixed"
-        className={`w-full sm:w-[calc(100%-${drawerWidth}px)] ml-0 sm:ml-[${drawerWidth}px]`}
+        sx={{
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          ml: { sm: `${drawerWidth}px` },
+        }}
       >
-        <Toolbar className="bg-white">
+        <Toolbar className="bg-slate-100">
           <IconButton
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            className="mr-2 text-primary"
+            sx={{ mr: 2, display: { sm: "none" }, color: "#3d3f36" }}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div" className="flex-grow">
-            <p className="text-lg font-bold text-primary font-serif italic">
+          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+            <p className="text-lg font-bold text-primary-400 font-serif italic">
               SARAMODA
             </p>
-            <p className="text-xs text-gray-800">control panel</p>
+            <p className="text-xs text-primary-800">control panel</p>
           </Typography>
-          <Box className="flex gap-1">
+          <Box sx={{ display: "flex", gap: 1 }}>
             <Button
-              className="border-1 border-primary bg-primary text-white"
+              sx={{
+                border: "1px solid #3d3f36",
+                backgroundColor: "primary",
+                color: "#4d4e49",
+                "&:hover": { backgroundColor: "#3d3f36", color: "#d3d5d0" },
+              }}
               onClick={logoutUser}
             >
               Logout
@@ -155,7 +163,7 @@ const NavAndSideBar = (props) => {
       </AppBar>
       <Box
         component="nav"
-        className="w-full flex-shrink-0"
+        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
         aria-label="mailbox folders"
       >
         <Drawer
@@ -165,19 +173,28 @@ const NavAndSideBar = (props) => {
           onTransitionEnd={handleDrawerTransitionEnd}
           onClose={handleDrawerClose}
           ModalProps={{ keepMounted: true }}
-          className="block"
-          PaperProps={{
-            className: "box-border w-[240px] bg-[#f1f5f9]",
+          sx={{
+            display: { xs: "block", sm: "none" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+              backgroundColor: "#f1f5f9",
+            },
           }}
         >
           {drawer}
         </Drawer>
         <Drawer
-          variant="persistent"
-          open={mobileOpen}
-          PaperProps={{
-            className: "box-border w-[240px] bg-[#f1f5f9]",
+          variant="permanent"
+          sx={{
+            display: { xs: "none", sm: "block" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+              backgroundColor: "#f1f5f9",
+            },
           }}
+          open
         >
           {drawer}
         </Drawer>
