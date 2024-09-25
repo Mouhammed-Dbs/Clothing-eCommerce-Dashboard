@@ -319,7 +319,7 @@ const EditProduct = () => {
           />
 
           <label className="text-lg font-semibold text-primary-500 inline-block">
-            Description *
+            Description
           </label>
           <Input
             variant="bordered"

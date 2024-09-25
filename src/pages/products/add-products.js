@@ -107,7 +107,6 @@ export default function AddProductsPage() {
     setErrorMessage("");
     const {
       title,
-      description,
       price,
       quantity,
       selectedColors,
@@ -118,7 +117,6 @@ export default function AddProductsPage() {
 
     if (
       !title ||
-      !description ||
       !price ||
       !quantity ||
       !imageCover ||
@@ -379,7 +377,7 @@ export default function AddProductsPage() {
 
             {/* Description Input */}
             <label className="text-lg font-semibold text-primary-500 inline-block">
-              Description *
+              Description
             </label>
             <Input
               variant="bordered"
