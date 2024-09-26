@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import {
   getSpecificUserOrders,
   updateIsDelivered,
-  updateIsPay,
 } from "../../../public/functions/order";
 import {
   Box,
@@ -19,6 +18,7 @@ import {
   TableRow,
 } from "@mui/material";
 import { Spinner } from "@nextui-org/react";
+import { IoPrintSharp } from "react-icons/io5";
 
 export default function OrderDetailPage() {
   const [order, setOrder] = useState(null);
@@ -56,15 +56,46 @@ export default function OrderDetailPage() {
     }
   };
 
-  const handleUpdatePaid = async () => {
-    setUpdating(true);
-    try {
-      await updateIsPay(id);
-      setOrder((prevOrder) => ({ ...prevOrder, isPaid: true }));
-    } catch (error) {
-      console.error("Error updating payment status:", error);
-    } finally {
-      setUpdating(false);
+  const handlePrintAddress = () => {
+    if (typeof window !== "undefined") {
+      const printWindow = window.open("", "_blank", "width=800,height=400");
+      if (printWindow) {
+        printWindow.document.write(`
+        <html>
+          <head>
+            <title>Shipping Label</title>
+            <style>
+              body {
+                font-family: Arial, sans-serif;
+                padding: 20px;
+              }
+              h1 {
+                font-size: 24px;
+                margin-bottom: 10px;
+              }
+              p {
+                font-size: 18px;
+                margin-bottom: 8px;
+              }
+              .label-box {
+                border: 2px dashed #4d4e49;
+                padding: 20px;
+                margin-top: 20px;
+              }
+            </style>
+          </head>
+          <body>
+            <div class="label-box">
+              <h1>Shipping Address</h1>
+              <p>${order?.shippingAddress.details}, ${order?.shippingAddress.city}, ${order?.shippingAddress.postalCode}</p>
+            </div>
+          </body>
+        </html>
+      `);
+        printWindow.document.close();
+        printWindow.focus();
+        printWindow.print();
+      }
     }
   };
 
@@ -123,22 +154,6 @@ export default function OrderDetailPage() {
                 <Grid item>
                   <Button
                     variant="contained"
-                    color="primary"
-                    onClick={handleUpdatePaid}
-                    disabled={updating || order.isPaid}
-                    sx={{
-                      border: "1px solid #4d4e49",
-                      backgroundColor: "#4d4e49",
-                      color: "#fff",
-                      "&:hover": { backgroundColor: "#3d3f36" },
-                    }}
-                  >
-                    {updating ? "Updating..." : "Mark as Paid"}
-                  </Button>
-                </Grid>
-                <Grid item>
-                  <Button
-                    variant="contained"
                     color="secondary"
                     onClick={handleUpdateDelivered}
                     disabled={updating || order.isDelivered}
@@ -150,6 +165,21 @@ export default function OrderDetailPage() {
                     }}
                   >
                     {updating ? "Updating..." : "Mark as Delivered"}
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    onClick={handlePrintAddress}
+                    sx={{
+                      border: "1px solid #4d4e49",
+                      backgroundColor: "#4d4e49",
+                      color: "#fff",
+                      "&:hover": { backgroundColor: "#3d3f36" },
+                    }}
+                  >
+                    <IoPrintSharp className="mr-2" />
+                    Print Shipping Address
                   </Button>
                 </Grid>
               </Grid>
