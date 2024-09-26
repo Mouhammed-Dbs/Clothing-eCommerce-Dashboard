@@ -64,25 +64,3 @@ export const updateIsDelivered = async (orderId) => {
     throw new Error("No token found. Please log in.");
   }
 };
-
-export const updateIsPay = async (orderId) => {
-  let token = getToken();
-  if (token) {
-    try {
-      const response = await axios.put(
-        `${process.env.BASE_API_URL}/api/v1/orders/${orderId}/pay`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      return response.data;
-    } catch (error) {
-      throw error.response.data;
-    }
-  } else {
-    throw new Error("No token found. Please log in.");
-  }
-};
