@@ -13,7 +13,7 @@ import {
   Typography,
   Button,
 } from "@mui/material";
-import { Spinner } from "@nextui-org/react";
+import { Spinner, Input } from "@nextui-org/react";
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState([]);
@@ -21,6 +21,7 @@ export default function OrdersPage() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [selectedId, setSelectedId] = useState("");
   const router = useRouter();
 
   const fetchOrders = async (page = 1) => {
@@ -55,11 +56,42 @@ export default function OrdersPage() {
     }
   };
 
+  const handleOpenOrderById = () => {
+    router.push("/orders/" + selectedId);
+  };
+
   return (
     <Box padding={2}>
-      <Typography variant="h4" gutterBottom sx={{ mb: 2, color: "#3d3f36" }}>
-        Orders
-      </Typography>
+      <div className="flex justify-between">
+        <Typography variant="h4" gutterBottom sx={{ mb: 2, color: "#3d3f36" }}>
+          Orders
+        </Typography>
+        <div className="flex gap-1">
+          <Input
+            type="text"
+            placeholder="Type order id"
+            classNames={{
+              input: "text-red-500 font-semibold text-black",
+              base: "bg-transparent rounded-xl border-1 border-primary h-11",
+              inputWrapper: "bg-white",
+              innerWrapper: "bg-transparent",
+            }}
+            onChange={(e) => setSelectedId(e.target.value)}
+          />
+          <Button
+            variant="contained"
+            sx={{
+              borderRadius: "15px",
+              height: "40px",
+              backgroundColor: "#4d4e49",
+              "&:hover": { backgroundColor: "#3d3f36" },
+            }}
+            onClick={handleOpenOrderById}
+          >
+            Go
+          </Button>
+        </div>
+      </div>
 
       {loading ? (
         <Box
@@ -107,6 +139,7 @@ export default function OrdersPage() {
               <TableBody>
                 {orders.map((order) => (
                   <TableRow
+                    className="cursor-pointer"
                     key={order._id}
                     hover
                     onClick={() => handleRowClick(order._id)}
