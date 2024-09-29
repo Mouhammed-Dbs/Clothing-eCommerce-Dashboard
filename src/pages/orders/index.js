@@ -62,11 +62,11 @@ export default function OrdersPage() {
 
   return (
     <Box padding={2}>
-      <div className="flex justify-between">
+      <div className="md:flex justify-between">
         <Typography variant="h4" gutterBottom sx={{ mb: 2, color: "#3d3f36" }}>
           Orders
         </Typography>
-        <div className="flex gap-1">
+        <div className="flex gap-1 mb-2 md:mb-0">
           <Input
             type="text"
             placeholder="Type order id"
