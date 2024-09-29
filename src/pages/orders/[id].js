@@ -148,7 +148,12 @@ export default function OrderDetailPage() {
             <Typography variant="h6" sx={{ color: "#6b7280" }}>
               Delivered: {order.isDelivered ? "Yes" : "No"}
             </Typography>
-
+            <Typography variant="h6" sx={{ color: "#6b7280" }}>
+              Created At: {order.createdAt}
+            </Typography>
+            <Typography variant="h6" sx={{ color: "#6b7280" }}>
+              Updated At: {order.updatedAt}
+            </Typography>
             <Box marginTop={2}>
               <Grid container spacing={2}>
                 <Grid item>
