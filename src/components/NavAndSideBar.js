@@ -76,8 +76,13 @@ const NavAndSideBar = (props) => {
     },
     {
       text: "Orders",
-      icon: <MdListAlt className="text-primary-600 text-3xl" />, // Icon for Orders
+      icon: <MdListAlt className="text-primary-600 text-3xl" />,
       href: "/orders",
+    },
+    {
+      text: "Returned Orders",
+      icon: <MdListAlt className="text-primary-600 text-3xl" />,
+      href: "/return-orders",
     },
   ];
 
@@ -127,8 +132,7 @@ const NavAndSideBar = (props) => {
       <AppBar
         position="fixed"
         sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
+          width: "100%", // إزالة تأثير العرض بناءً على حالة القائمة الجانبية
         }}
       >
         <Toolbar className="bg-slate-100">
@@ -136,7 +140,7 @@ const NavAndSideBar = (props) => {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" }, color: "#3d3f36" }}
+            sx={{ mr: 2, color: "#3d3f36" }}
           >
             <MenuIcon />
           </IconButton>
@@ -161,44 +165,24 @@ const NavAndSideBar = (props) => {
           </Box>
         </Toolbar>
       </AppBar>
-      <Box
-        component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="mailbox folders"
+
+      <Drawer
+        container={container}
+        variant="temporary"
+        open={mobileOpen}
+        onTransitionEnd={handleDrawerTransitionEnd}
+        onClose={handleDrawerClose}
+        ModalProps={{ keepMounted: true }}
+        sx={{
+          "& .MuiDrawer-paper": {
+            boxSizing: "border-box",
+            width: drawerWidth,
+            backgroundColor: "#f1f5f9",
+          },
+        }}
       >
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onTransitionEnd={handleDrawerTransitionEnd}
-          onClose={handleDrawerClose}
-          ModalProps={{ keepMounted: true }}
-          sx={{
-            display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-              backgroundColor: "#f1f5f9",
-            },
-          }}
-        >
-          {drawer}
-        </Drawer>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: "none", sm: "block" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-              backgroundColor: "#f1f5f9",
-            },
-          }}
-          open
-        >
-          {drawer}
-        </Drawer>
-      </Box>
+        {drawer}
+      </Drawer>
     </Box>
   );
 };

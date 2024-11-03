@@ -19,6 +19,7 @@ import {
 } from "@mui/material";
 import { Spinner } from "@nextui-org/react";
 import { IoPrintSharp } from "react-icons/io5";
+import Link from "next/link";
 
 export default function OrderDetailPage() {
   const [order, setOrder] = useState(null);
@@ -33,6 +34,7 @@ export default function OrderDetailPage() {
 
       try {
         const res = await getSpecificUserOrders(id);
+
         setOrder(res.data);
       } catch (error) {
         console.error("Error fetching order:", error);
@@ -187,6 +189,26 @@ export default function OrderDetailPage() {
                     Print Shipping Address
                   </Button>
                 </Grid>
+                {order.returnOrder && (
+                  <Grid item>
+                    <Link
+                      href={`/return-orders/${order.returnOrder._id}`}
+                      passHref
+                    >
+                      <Button
+                        variant="contained"
+                        sx={{
+                          border: "1px solid #4d4e49",
+                          backgroundColor: "#2b93db",
+                          color: "#fff",
+                          "&:hover": { backgroundColor: "#1d9ed8" },
+                        }}
+                      >
+                        View Return Request
+                      </Button>
+                    </Link>
+                  </Grid>
+                )}
               </Grid>
             </Box>
           </Paper>
@@ -231,7 +253,11 @@ export default function OrderDetailPage() {
                       <TableCell>{item.quantity}</TableCell>
                       <TableCell>{item.color}</TableCell>
                       <TableCell>{item.size}</TableCell>
-                      <TableCell>{item.price}</TableCell>
+                      <TableCell>
+                        {item.priceAfterDiscount
+                          ? item.priceAfterDiscount
+                          : item.price}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { getUserOrders } from "../../../public/functions/order";
 import {
   Table,
   TableBody,
@@ -14,6 +13,7 @@ import {
   Button,
 } from "@mui/material";
 import { Spinner, Input } from "@nextui-org/react";
+import { getUserReturnOrders } from "../../../public/functions/returnOrder";
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState([]);
@@ -28,7 +28,7 @@ export default function OrdersPage() {
     setLoading(page === 1);
     setLoadingMore(page !== 1);
     try {
-      const res = await getUserOrders(page);
+      const res = await getUserReturnOrders(page);
       setOrders((prevOrders) =>
         page === 1 ? res.data : [...prevOrders, ...res.data]
       );
@@ -47,7 +47,7 @@ export default function OrdersPage() {
   }, []);
 
   const handleRowClick = (orderId) => {
-    router.push(`/orders/${orderId}`);
+    router.push(`/return-orders/${orderId}`);
   };
 
   const handleLoadMore = () => {
@@ -57,19 +57,40 @@ export default function OrdersPage() {
   };
 
   const handleOpenOrderById = () => {
-    router.push("/orders/" + selectedId);
+    if (selectedId) {
+      router.push(`/return-orders/${selectedId}`);
+    }
+  };
+
+  // Function to determine the status of the return order
+  // Function to determine the status of the return order and count each status type
+  // Function to determine the status of the return order and count each status type
+  const getOrderStatus = (returnItems) => {
+    const statusCounts = returnItems.reduce(
+      (acc, item) => {
+        acc[item.status] = (acc[item.status] || 0) + 1;
+        return acc;
+      },
+      { Pending: 0, Approved: 0, Rejected: 0, Refunded: 0 }
+    );
+
+    // Filter out statuses with count of 0 and format the output
+    return Object.entries(statusCounts)
+      .filter(([, count]) => count > 0)
+      .map(([status, count]) => `${status}: ${count}`)
+      .join(", ");
   };
 
   return (
     <Box padding={2}>
       <div className="md:flex justify-between">
         <Typography variant="h4" gutterBottom sx={{ mb: 2, color: "#3d3f36" }}>
-          Orders
+          Returned Orders
         </Typography>
         <div className="flex gap-1 mb-2 md:mb-0">
           <Input
             type="text"
-            placeholder="Type order id"
+            placeholder="Type returned order id"
             classNames={{
               input: "text-red-500 font-semibold text-black",
               base: "bg-transparent rounded-xl border-1 border-primary h-11",
@@ -117,22 +138,22 @@ export default function OrdersPage() {
               <TableHead>
                 <TableRow>
                   <TableCell sx={{ fontWeight: "bold", color: "#3d3f36" }}>
+                    Created At
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: "bold", color: "#3d3f36" }}>
                     Order ID
                   </TableCell>
                   <TableCell sx={{ fontWeight: "bold", color: "#3d3f36" }}>
-                    Shipping Address
+                    Refund Amount
                   </TableCell>
                   <TableCell sx={{ fontWeight: "bold", color: "#3d3f36" }}>
-                    Total Price
+                    User Name
                   </TableCell>
                   <TableCell sx={{ fontWeight: "bold", color: "#3d3f36" }}>
-                    Payment Method
+                    Returned Items Count
                   </TableCell>
                   <TableCell sx={{ fontWeight: "bold", color: "#3d3f36" }}>
-                    Paid
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: "bold", color: "#3d3f36" }}>
-                    Delivered
+                    Status
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -144,18 +165,14 @@ export default function OrdersPage() {
                     hover
                     onClick={() => handleRowClick(order._id)}
                   >
-                    <TableCell>{order._id}</TableCell>
                     <TableCell>
-                      {order.shippingAddress.details},
-                      {order.shippingAddress.city},
-                      {order.shippingAddress.postalCode}
+                      {new Date(order.createdAt).toLocaleString()}
                     </TableCell>
-                    <TableCell>
-                      {Number(order.totalOrderPrice).toFixed(2)}
-                    </TableCell>
-                    <TableCell>{order.paymentMethodType}</TableCell>
-                    <TableCell>{order.isPaid ? "Yes" : "No"}</TableCell>
-                    <TableCell>{order.isDelivered ? "Yes" : "No"}</TableCell>
+                    <TableCell>{order.order}</TableCell>
+                    <TableCell>{order.refundAmount}</TableCell>
+                    <TableCell>{order.user.name}</TableCell>
+                    <TableCell>{order.returnItems.length}</TableCell>
+                    <TableCell>{getOrderStatus(order.returnItems)}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
