@@ -87,9 +87,11 @@ export default function AddProductsPage() {
       ...product,
       [name]:
         name === "imageCover"
-          ? Array.from(files)[0]
+          ? files[0]
           : name === "images"
           ? Array.from(files)
+          : name === "video"
+          ? files[0]
           : value,
     });
   };
@@ -425,6 +427,21 @@ export default function AddProductsPage() {
               onChange={handleChange}
               radius="sm"
             />
+
+            <label className="text-lg font-semibold text-primary-500 inline-block">
+              Product Video
+            </label>
+            <Input
+              variant="bordered"
+              size="lg"
+              color="primary"
+              type="file"
+              name="video"
+              accept="video/*"
+              onChange={handleChange}
+              radius="sm"
+            />
+
             {errorMessage && (
               <div className="text-red-500 text-center mb-4">
                 {errorMessage}
@@ -434,7 +451,7 @@ export default function AddProductsPage() {
               onClick={handleAddProduct}
               color="primary"
               auto
-              disabled={loading} // تعطيل الزر أثناء التحميل
+              disabled={loading}
             >
               {loading ? "Adding..." : "Add Product"}
             </Button>

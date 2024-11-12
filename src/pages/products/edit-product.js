@@ -53,6 +53,7 @@ const EditProduct = () => {
   const router = useRouter();
   const { id } = router.query;
   const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
   const [updateLoading, setUpdateLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
@@ -65,6 +66,7 @@ const EditProduct = () => {
     colors: [],
     images: [],
     coverImage: "",
+    video: "",
     color: [],
     size: [],
   });
@@ -112,10 +114,22 @@ const EditProduct = () => {
                   url: productData.imageCover || "",
                 });
 
-            const [formattedImages, formattedCoverImage] = await Promise.all([
-              Promise.all(formattedImagesPromises || []),
-              formattedCoverImagePromise,
-            ]);
+            const formattedVideoPromise = productData.videoUrl
+              ? downloadFile(productData.videoUrl).then((file) => ({
+                  file,
+                  url: productData.videoUrl,
+                }))
+              : Promise.resolve({
+                  file: null,
+                  url: productData.videoUrl || "",
+                });
+
+            const [formattedImages, formattedCoverImage, formattedVideo] =
+              await Promise.all([
+                Promise.all(formattedImagesPromises || []),
+                formattedCoverImagePromise,
+                formattedVideoPromise,
+              ]);
 
             setFormData({
               title: productData.title || "",
@@ -130,6 +144,7 @@ const EditProduct = () => {
               quantity: productData.quantity || "",
               images: formattedImages || [],
               coverImage: formattedCoverImage,
+              video: formattedVideo,
               colors: ["white", "black", "red", "blue", "green", "yellow"],
               sizes: ["small", "medium", "large", "xl", "xxl"],
             });
@@ -158,9 +173,17 @@ const EditProduct = () => {
     });
   };
 
+  const handleVideoChange = (e) => {
+    const file = e.target.files[0];
+    setFormData((prev) => ({
+      ...prev,
+      video: file ? { file, url: URL.createObjectURL(file) } : null,
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setErrorMessage("");
     // Prepare the data object to send
     const formDataToSend = {
       title: formData.title,
@@ -181,6 +204,23 @@ const EditProduct = () => {
       formDataToSend.images = formData.images
         .map((image) => image.file)
         .filter((file) => file);
+    }
+
+    if (formData.video?.file) {
+      formDataToSend.video = formData.video.file;
+    }
+
+    if (
+      !formDataToSend.title ||
+      !formDataToSend.price ||
+      !formDataToSend.quantity ||
+      !formDataToSend.imageCover ||
+      formDataToSend.selectedColors.length === 0 ||
+      formDataToSend.selectedSizes.length === 0 ||
+      formDataToSend.subcategories.length === 0
+    ) {
+      setErrorMessage("Please fill out all required fields.");
+      return;
     }
 
     try {
@@ -248,6 +288,13 @@ const EditProduct = () => {
     setFormData((prev) => ({
       ...prev,
       coverImage: "",
+    }));
+  };
+
+  const handleVideoDelete = () => {
+    setFormData((prev) => ({
+      ...prev,
+      video: "",
     }));
   };
 
@@ -485,7 +532,7 @@ const EditProduct = () => {
             Cover Image *
           </label>
           {formData.coverImage && (
-            <div className="relative mb-2">
+            <div className="relative w-fit mb-2">
               <Image
                 src={formData.coverImage.url}
                 alt="Cover"
@@ -521,7 +568,7 @@ const EditProduct = () => {
           />
 
           <label className="text-lg font-semibold text-primary-500 inline-block">
-            Product Images *
+            Product Images
           </label>
           <div className="flex flex-wrap gap-2 mb-2">
             {formData.images.map((image, index) => (
@@ -561,7 +608,46 @@ const EditProduct = () => {
             onChange={handleImageChange}
             radius="sm"
           />
-
+          <label className="text-lg font-semibold text-primary-500 inline-block">
+            Product Video
+          </label>
+          {formData.video.url && (
+            <div className="relative mb-2 w-fit">
+              <video
+                className="w-64 h-40"
+                src={formData.video.url}
+                width="100"
+                controls
+              />
+              <Button
+                isIconOnly
+                className="absolute top-2 right-0 bg-red-500 text-white rounded-full p-1"
+                size="sm"
+                color="error"
+                onClick={handleVideoDelete}
+              >
+                <MdClose size={20} />
+              </Button>
+            </div>
+          )}
+          <Input
+            variant="bordered"
+            size="lg"
+            color="primary"
+            classNames={{
+              input: "text-red-500 font-semibold text-black",
+              base: "bg-transparent rounded-xl",
+              inputWrapper: "bg-white",
+              innerWrapper: "bg-transparent",
+            }}
+            radius="sm"
+            type="file"
+            accept="video/*"
+            onChange={handleVideoChange}
+          />
+          {errorMessage && (
+            <div className="text-red-500 text-center mb-4">{errorMessage}</div>
+          )}
           <Button isDisabled={updateLoading} type="submit" color="primary" auto>
             {updateLoading ? "Updating.." : "Update Product"}
           </Button>
